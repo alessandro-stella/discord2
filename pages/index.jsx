@@ -1,33 +1,29 @@
 import Head from "next/head";
-import Button from "../components/Button.jsx";
-import server from "../server.js";
+import server from "server.js";
+import connectMongo from "database/connectMongo";
+import Link from "next/link";
 
-export default function Home(props) {
-    console.log(props);
-
-    const buttons = ["play", "go", "stop"];
-
+export default function redirect() {
     return (
-        <>
-            <Head>
-                <title>Trading4Noobs</title>
-            </Head>
-
-            <div className="flex flex-col min-h-screen">
-                <div className="m-4 text-4xl font-bold">Testing API</div>
-                {buttons.map((singleButton, index) => (
-                    <Button key={index} text={singleButton} />
-                ))}
-            </div>
-        </>
+        <div>
+            <div>Something went wrong!</div>
+            <Link href="/login">Go to login</Link>
+        </div>
     );
 }
 
 export async function getServerSideProps() {
-    let response = await fetch(`${server}/api/testApi`);
-    response = await response.json();
+    await connectMongo();
+
+    let response = await fetch(`${server}/api/checkIfLogged`);
+    let { session } = await response.json();
 
     return {
-        props: { response },
+        /* redirect: {
+            destination: `/${session ? "home" : "login"}`,
+            permanent: false,
+        }, */
+
+        props: {},
     };
 }
