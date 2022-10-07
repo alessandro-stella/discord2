@@ -1,29 +1,18 @@
-import Head from "next/head";
-import server from "server.js";
-import connectMongo from "database/connectMongo";
-import Link from "next/link";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 export default function redirect() {
-    return (
-        <div>
-            <div>Something went wrong!</div>
-            <Link href="/login">Go to login</Link>
-        </div>
-    );
-}
+    const router = useRouter();
+    const { data: session, status } = useSession();
 
-export async function getServerSideProps() {
-    await connectMongo();
+    useEffect(() => {
+        if (status === "loading") return;
 
-    let response = await fetch(`${server}/api/checkIfLogged`);
-    let { session } = await response.json();
+        if (session) router.push("/home");
+        else router.push("/login");
+    }, [session]);
+    useEffect(() => {});
 
-    return {
-        /* redirect: {
-            destination: `/${session ? "home" : "login"}`,
-            permanent: false,
-        }, */
-
-        props: {},
-    };
+    return <div>Loading...</div>;
 }
