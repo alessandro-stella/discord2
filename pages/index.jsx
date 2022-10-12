@@ -11,7 +11,7 @@ export default function redirect() {
 
         if (session) router.push("/home");
         else router.push("/login");
-    }, [session]);
+    }, [session, status]);
     useEffect(() => {});
 
     return <div>Loading...</div>;

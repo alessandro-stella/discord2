@@ -9,11 +9,8 @@ export default function home() {
 
     useEffect(() => {
         if (status === "loading") return;
-
-        console.log(session);
-
         if (!session) router.push("/login");
-    }, [session]);
+    }, [session, status]);
 
     return (
         <div>
