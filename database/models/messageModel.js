@@ -14,17 +14,7 @@ const messageSchema = new Schema(
 
         content: {
             type: String,
-            default: "",
-        },
-
-        embeds: {
-            type: Array,
-            default: [],
-        },
-
-        components: {
-            type: Array,
-            default: [],
+            required: true,
         },
     },
     { timestamps: true }

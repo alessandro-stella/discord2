@@ -1,11 +1,9 @@
 import Message from "database/models/messageModel";
 
 export default async function getMessages(req, res) {
+    let resMessages, channelId = req.head.channelId;
 
-    
-    let resMessages;
-
-    await Message.find({})
+    await Message.find({ channelId })
         .then((messages) => {
             resMessages = messages;
         })

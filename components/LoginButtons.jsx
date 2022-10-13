@@ -20,12 +20,12 @@ export default function LoginButtons({ providers }) {
                 <div
                     key={index}
                     onClick={() => signIn(provider.id)}
-                    className={`flex items-center justify-center gap-2 p-2 m-1 transition-all border-2 shadow-md hover:shadow-xl hover:cursor-pointer rounded-xl w-fit ${
+                    className={`text-sm flex items-center justify-center gap-2 p-2 m-1 transition-all shadow-md hover:shadow-xl hover:cursor-pointer rounded-xl w-fit ${
                         styles[provider.id].button
                     }
                         `}>
                     <div
-                        className={`relative w-8 h-8 ${
+                        className={`relative w-4 h-4 ${
                             styles[provider.id].icon
                         }`}>
                         <Image src={`/${provider.id}Logo.svg`} layout="fill" />
