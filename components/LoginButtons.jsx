@@ -35,6 +35,7 @@ export default function LoginButtons({ providers, isRegistering }) {
                                 <Image
                                     src={`/${provider.id}Logo.svg`}
                                     layout="fill"
+                                    alt="buttonLogo"
                                 />
                             </div>
                             <div>

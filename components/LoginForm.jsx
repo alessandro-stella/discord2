@@ -41,7 +41,7 @@ export default function LoginForm() {
                     Welcome back!
                 </div>
                 <div className="text-lg text-discordGrey-450 text-shadow">
-                    We're so excited to see you again!
+                    We&apos;re so excited to see you again!
                 </div>
             </div>
 
@@ -63,7 +63,7 @@ export default function LoginForm() {
 
                 {showError && (
                     <div className="text-red-500 text-sm text-shadow">
-                        We haven't found any user with these credentials, check
+                        We haven&apos;t found any user with these credentials, check
                         the email or the password and try again
                     </div>
                 )}

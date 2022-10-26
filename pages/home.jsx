@@ -3,14 +3,14 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 
-export default function home() {
+export default function Home() {
     const router = useRouter();
     const { data: session, status } = useSession();
 
     useEffect(() => {
         if (status === "loading") return;
         if (!session) router.push("/login");
-    }, [session, status]);
+    });
 
     return (
         <div>
@@ -25,6 +25,7 @@ export default function home() {
                                     <Image
                                         src={session.user.image}
                                         layout="fill"
+                                        alt="userImage"
                                     />
                                 </div>
                                 <div>{session.user.name}</div>

@@ -6,7 +6,7 @@ import CustomLoader from "components/CustomLoader.jsx";
 import RegisterForm from "components/RegisterForm";
 import LoginForm from "components/LoginForm";
 
-export default function Component({ providers, randomIndex }) {
+export default function Login({ providers, randomIndex }) {
     console.log({ providers });
     const router = useRouter();
     const { data: session, status } = useSession();
@@ -14,8 +14,9 @@ export default function Component({ providers, randomIndex }) {
 
     useEffect(() => {
         if (status === "loading") return;
+
         if (session) router.push("/home");
-    }, [session, status]);
+    }, [session, status, router]);
 
     return (
         <div
