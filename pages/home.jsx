@@ -33,7 +33,13 @@ export default function home() {
 
                             <div>
                                 <div>E togliti su</div>
-                                <button onClick={() => signOut()}>
+                                <button
+                                    onClick={() =>
+                                        signOut({
+                                            redirect: false,
+                                            callbackUrl: "/login",
+                                        })
+                                    }>
                                     Sign Out
                                 </button>
                             </div>

@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import {Schema, model, models} from "mongoose";
 import Crypto from "crypto";
 
 const userSchema = new Schema(
@@ -7,10 +7,7 @@ const userSchema = new Schema(
             type: String,
             required: true,
         },
-        password: {
-            type: String,
-            validate: [validatePassword, "The password's length is not valid"],
-        },
+        password: String,
         username: {
             type: String,
             required: true,
@@ -22,7 +19,6 @@ const userSchema = new Schema(
         channelsJoined: {
             type: Array,
             default: [],
-            validate: [arrayLimit, "You are in too much channels"],
         },
     },
     { timestamps: true }
@@ -34,16 +30,8 @@ function generateIdentifier() {
     return `#${code}`;
 }
 
-function arrayLimit(val) {
-    return val.length <= 100;
-}
-
-function validatePassword(val) {
-    return val.length >= 8 && val.length <= 16;
-}
-
 userSchema.index({ username: 1, identifier: 1 }, { unique: true });
 
-const User = model("user", userSchema);
+const User = models.verifiedUsers || model("verifiedUsers", userSchema, "verifiedUsers");
 
 export default User;

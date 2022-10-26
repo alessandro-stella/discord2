@@ -1,7 +1,9 @@
 import { signIn } from "next-auth/react";
 import Image from "next/image";
 
-export default function LoginButtons({ providers }) {
+export default function LoginButtons({ providers, isRegistering }) {
+    console.log(providers);
+
     const styles = {
         google: { button: "bg-google", icon: "" },
         github: {
@@ -16,23 +18,34 @@ export default function LoginButtons({ providers }) {
 
     return (
         <div className="flex flex-col gap2">
-            {Object.values(providers).map((provider, index) => (
-                <div
-                    key={index}
-                    onClick={() => signIn(provider.id)}
-                    className={`text-sm flex items-center justify-center gap-2 p-2 m-1 transition-all shadow-md hover:shadow-xl hover:cursor-pointer rounded-xl w-fit ${
-                        styles[provider.id].button
-                    }
+            {Object.values(providers).map((provider, index) => {
+                if (provider.id !== "credentials") {
+                    return (
+                        <div
+                            key={index}
+                            onClick={() => signIn(provider.id)}
+                            className={`text-sm flex items-center justify-center gap-2 p-2 m-1 transition-all shadow-md hover:shadow-xl hover:cursor-pointer rounded-xl w-fit ${
+                                styles[provider.id].button
+                            }
                         `}>
-                    <div
-                        className={`relative w-4 h-4 ${
-                            styles[provider.id].icon
-                        }`}>
-                        <Image src={`/${provider.id}Logo.svg`} layout="fill" />
-                    </div>
-                    <div>Sign in with {provider.name}</div>
-                </div>
-            ))}{/* 
+                            <div
+                                className={`relative w-4 h-4 ${
+                                    styles[provider.id].icon
+                                }`}>
+                                <Image
+                                    src={`/${provider.id}Logo.svg`}
+                                    layout="fill"
+                                />
+                            </div>
+                            <div>
+                                {isRegistering ? "Register" : "Sign in"} with{" "}
+                                {provider.name}
+                            </div>
+                        </div>
+                    );
+                }
+            })}
+            {/* 
             <br />
             {Object.values(providers).map((provider, index) => (
                 <div

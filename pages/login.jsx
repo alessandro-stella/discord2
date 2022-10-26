@@ -7,12 +7,12 @@ import RegisterForm from "components/RegisterForm";
 import LoginForm from "components/LoginForm";
 
 export default function Component({ providers, randomIndex }) {
+    console.log({ providers });
     const router = useRouter();
     const { data: session, status } = useSession();
     const [isRegistering, setIsRegistering] = useState(false);
 
     useEffect(() => {
-        console.log(status);
         if (status === "loading") return;
         if (session) router.push("/home");
     }, [session, status]);
@@ -27,8 +27,8 @@ export default function Component({ providers, randomIndex }) {
                 ) : (
                     <>
                         {!session && (
-                            <div className="bg-red-300">
-                                <div>
+                            <div className="w-2/3 max-w-[30em]">
+                                <div className="w-full">
                                     {isRegistering ? (
                                         <RegisterForm />
                                     ) : (
@@ -54,7 +54,10 @@ export default function Component({ providers, randomIndex }) {
                                             : "Join us now!"}
                                     </div>
                                 </div>
-                                <LoginButtons providers={providers} />
+                                <LoginButtons
+                                    providers={providers}
+                                    isRegistering={isRegistering}
+                                />
                             </div>
                         )}
                     </>

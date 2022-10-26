@@ -16,10 +16,8 @@ export default function redirect({ randomIndex }) {
     useEffect(() => {});
 
     return (
-        <div
-            className="relative grid w-screen h-screen bg-center bg-no-repeat place-items-center"
-            style={{ backgroundImage: `url('/bg${randomIndex}.png')` }}>
-            <div className="bg-discordGrey-700 p-4 shadow-xl rounded-md  m-4 min-w-[30em] w-[80%] max-w-[50em] min-h-[20em] h-[70%] max-h-[50em] grid place-items-center">
+        <div className="relative grid w-screen h-screen place-items-center bg-discordGrey-700">
+            <div className="m-4 p-4 rounded-md min-w-[30em] w-[80%] max-w-[50em] min-h-[20em] h-[70%] max-h-[50em] grid place-items-center">
                 <CustomLoader />
             </div>
         </div>
