@@ -8,11 +8,10 @@ import findUser from "database/functions/findUser";
 export const authOptions = {
     providers: [
         CredentialsProvider({
-            async authorize(credentials, req) {
+            async authorize(credentials, isRegistering, req) {
                 const { email, password } = credentials;
 
                 const response = await findUser(email, password);
-
                 console.log({ response });
 
                 if (!response) {
@@ -36,6 +35,16 @@ export const authOptions = {
         }),
     ],
     secret: process.env.NEXTAUTH_SECRET,
+    callbacks: {
+        async signIn({ user, credentials }) {
+            if (credentials) {
+                return user;
+            }
+
+            const { name, email: userEmail, image } = user;
+            return { name, userEmail, image };
+        },
+    },
 };
 
 export default NextAuth(authOptions);

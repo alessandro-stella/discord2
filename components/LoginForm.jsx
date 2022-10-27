@@ -10,7 +10,6 @@ export default function LoginForm() {
     const [showError, setShowError] = useState(false);
 
     function triggerError() {
-        console.log("Trigger error");
         setShowError(true);
 
         setTimeout(() => {
@@ -19,8 +18,6 @@ export default function LoginForm() {
     }
 
     async function handleSignIn() {
-        console.log("Testing error");
-
         await signIn("credentials", {
             email,
             password,

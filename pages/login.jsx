@@ -7,7 +7,6 @@ import RegisterForm from "components/RegisterForm";
 import LoginForm from "components/LoginForm";
 
 export default function Login({ providers, randomIndex }) {
-    console.log({ providers });
     const router = useRouter();
     const { data: session, status } = useSession();
     const [isRegistering, setIsRegistering] = useState(false);
@@ -20,7 +19,7 @@ export default function Login({ providers, randomIndex }) {
 
     return (
         <div
-            className="relative grid w-screen h-screen bg-center bg-no-repeat place-items-center"
+            className="bg-discordGrey-700 relative grid w-screen h-screen bg-center bg-no-repeat place-items-center"
             style={{ backgroundImage: `url('/bg${randomIndex}.png')` }}>
             <div className="bg-discordGrey-700 p-4 shadow-xl rounded-md  m-4 min-w-[30em] w-[80%] max-w-[50em] min-h-[20em] h-[70%] max-h-[50em] grid place-items-center">
                 {status === "loading" ? (
