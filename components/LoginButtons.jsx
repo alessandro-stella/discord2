@@ -1,5 +1,6 @@
 import { signIn } from "next-auth/react";
 import Image from "next/image";
+import server from "server.js";
 
 export default function LoginButtons({ providers, isRegistering }) {
     const styles = {
@@ -22,7 +23,10 @@ export default function LoginButtons({ providers, isRegistering }) {
                         <div
                             key={index}
                             onClick={() =>
-                                signIn(provider.id, { isRegistering })
+                                signIn(provider.id, {
+                                    isRegistering,
+                                    callbackUrl: `${server}/login`,
+                                })
                             }
                             className={`text-sm flex items-center justify-center gap-2 p-2 m-1 transition-all shadow-md hover:shadow-xl hover:cursor-pointer rounded-xl w-fit ${
                                 styles[provider.id].button
