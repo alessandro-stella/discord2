@@ -1,23 +1,28 @@
 import { signIn } from "next-auth/react";
 import { useState } from "react";
 import InputField from "./InputField";
+import SimpleLoader from "./SimpleLoader";
 
 export default function LoginForm() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+
     const [isPasswordShown, setIsPasswordShown] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
-    const [showError, setShowError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState(false);
 
-    function triggerError() {
-        setShowError(true);
+    function triggerError(msg) {
+        setErrorMessage(msg);
 
         setTimeout(() => {
-            setShowError(false);
+            setErrorMessage(false);
         }, 5000);
     }
 
     async function handleSignIn() {
+        setIsLoading(true);
+
         await signIn("credentials", {
             email,
             password,
@@ -25,10 +30,16 @@ export default function LoginForm() {
         })
             .then((res) => {
                 if (res.error) {
-                    triggerError();
+                    triggerError(res.error);
                 }
             })
-            .catch((err) => triggerError());
+            .catch((err) => {
+                triggerError(
+                    "There's been an error during the process, please try again"
+                );
+            });
+
+        setIsLoading(false);
     }
 
     return (
@@ -58,17 +69,16 @@ export default function LoginForm() {
                     setIsPasswordShown={setIsPasswordShown}
                 />
 
-                {showError && (
+                {errorMessage && (
                     <div className="text-red-500 text-sm text-shadow">
-                        We haven&apos;t found any user with these credentials, check
-                        the email or the password and try again
+                        {errorMessage}
                     </div>
                 )}
 
                 <div
                     onClick={() => handleSignIn()}
                     className="bg-discordPurple text-center text-white py-2 uppercase transition-all shadow-md hover:shadow-xl hover:cursor-pointer rounded-sm">
-                    login
+                    {isLoading ? <SimpleLoader /> : "login"}
                 </div>
             </div>
         </div>

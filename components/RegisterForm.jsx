@@ -21,6 +21,7 @@ export default function LoginForm() {
         await signIn("credentials", {
             email,
             password,
+            isRegistering: true,
             redirect: false,
         })
             .then((res) => {
@@ -60,8 +61,8 @@ export default function LoginForm() {
 
                 {showError && (
                     <div className="text-red-500 text-sm text-shadow">
-                        We haven&apos;t found any user with these credentials, check
-                        the email or the password and try again
+                        We haven&apos;t found any user with these credentials,
+                        check the email or the password and try again
                     </div>
                 )}
 

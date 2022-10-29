@@ -8,14 +8,15 @@ import findUser from "database/functions/findUser";
 export const authOptions = {
     providers: [
         CredentialsProvider({
-            async authorize(credentials, isRegistering, req) {
-                const { email, password } = credentials;
+            async authorize(credentials, req) {
+                const { email, password, isRegistering } = credentials;
 
                 const response = await findUser(email, password);
-                console.log({ response });
 
                 if (!response) {
-                    return null;
+                    throw new Error(
+                        "We haven't found any user with these credentials, check the email or the password and try again"
+                    );
                 }
 
                 return response.user;
@@ -37,6 +38,8 @@ export const authOptions = {
     secret: process.env.NEXTAUTH_SECRET,
     callbacks: {
         async signIn({ user, credentials }) {
+            console.log({ credentials, user });
+
             if (credentials) {
                 return user;
             }
@@ -44,6 +47,10 @@ export const authOptions = {
             const { name, email: userEmail, image } = user;
             return { name, userEmail, image };
         },
+    },
+    pages: {
+        signIn: "/login",
+        error: "/login",
     },
 };
 
