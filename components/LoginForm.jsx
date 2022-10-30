@@ -43,23 +43,15 @@ export default function LoginForm() {
     }
 
     return (
-        <div className="flex flex-col items-center justify-center w-full">
-            <div className="text-center">
-                <div className="text-3xl text-discordGrey-100 text-shadow">
-                    Welcome back!
-                </div>
-                <div className="text-lg text-discordGrey-450 text-shadow">
-                    We&apos;re so excited to see you again!
-                </div>
-            </div>
-
-            <div className="flex flex-col gap-2 w-full">
+        <div className="flex flex-col items-center justify-center md:border-r-[1px] border-discordGrey-550 md:pr-2">
+            <div className="flex flex-col w-full gap-2">
                 <InputField
                     type="email"
                     label="email"
                     value={email}
                     setValue={setEmail}
                 />
+
                 <InputField
                     type={isPasswordShown ? "text" : "password"}
                     label="password"
@@ -70,14 +62,14 @@ export default function LoginForm() {
                 />
 
                 {errorMessage && (
-                    <div className="text-red-500 text-sm text-shadow">
+                    <div className="text-sm text-red-500 text-shadow">
                         {errorMessage}
                     </div>
                 )}
 
                 <div
                     onClick={() => handleSignIn()}
-                    className="bg-discordPurple text-center text-white py-2 uppercase transition-all shadow-md hover:shadow-xl hover:cursor-pointer rounded-sm">
+                    className="py-2 mt-1 text-center text-white uppercase transition-all rounded-sm shadow-md select-none bg-discordPurple hover:shadow-xl hover:cursor-pointer">
                     {isLoading ? <SimpleLoader /> : "login"}
                 </div>
             </div>

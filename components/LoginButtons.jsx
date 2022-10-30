@@ -16,41 +16,46 @@ export default function LoginButtons({ providers, isRegistering }) {
     };
 
     return (
-        <div className="flex flex-col gap2">
-            {Object.values(providers).map((provider, index) => {
-                if (provider.id !== "credentials") {
-                    return (
-                        <div
-                            key={index}
-                            onClick={() =>
-                                signIn(provider.id, {
-                                    isRegistering,
-                                    callbackUrl: `${server}/login`,
-                                })
-                            }
-                            className={`text-sm flex items-center justify-center gap-2 p-2 m-1 transition-all shadow-md hover:shadow-xl hover:cursor-pointer rounded-xl w-fit ${
-                                styles[provider.id].button
-                            }
-                        `}>
+        <div className="flex flex-col flex-1 gap-2 pt-2 md:pt-0 md:pl-2">
+            <div className="text-lg text-discordGrey-450 text-shadow">
+                Other ways to {isRegistering ? "register" : "sign in"}
+            </div>
+            <div className="flex flex-col flex-1 gap-2">
+                {Object.values(providers).map((provider, index) => {
+                    if (provider.id !== "credentials") {
+                        return (
                             <div
-                                className={`relative w-4 h-4 ${
-                                    styles[provider.id].icon
-                                }`}>
-                                <Image
-                                    src={`/${provider.id}Logo.svg`}
-                                    layout="fill"
-                                    alt="buttonLogo"
-                                />
+                                key={index}
+                                onClick={() =>
+                                    signIn(provider.id, {
+                                        isRegistering,
+                                        callbackUrl: `${server}/login`,
+                                    })
+                                }
+                                className={`select-none text-sm flex items-center justify-center gap-2 py-2 transition-all shadow-md hover:shadow-xl hover:cursor-pointer rounded-md w-full ${
+                                    styles[provider.id].button
+                                }
+                            `}>
+                                <div
+                                    className={`relative w-4 h-4 ${
+                                        styles[provider.id].icon
+                                    }`}>
+                                    <Image
+                                        src={`/${provider.id}Logo.svg`}
+                                        layout="fill"
+                                        alt="buttonLogo"
+                                    />
+                                </div>
+                                <div className="md:text-base">
+                                    {`${
+                                        isRegistering ? "Register" : "Sign in"
+                                    } with ${provider.name}`}
+                                </div>
                             </div>
-                            <div>
-                                {`${
-                                    isRegistering ? "Register" : "Sign in"
-                                } with ${provider.name}`}
-                            </div>
-                        </div>
-                    );
-                }
-            })}
+                        );
+                    }
+                })}
+            </div>
         </div>
     );
 }
