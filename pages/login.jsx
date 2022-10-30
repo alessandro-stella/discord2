@@ -39,7 +39,7 @@ export default function Login({ providers, randomIndex }) {
                             </div>
                             <div className="text-lg text-discordGrey-450 text-shadow">
                                 {isRegistering
-                                    ? "We're so excited to have you here today"
+                                    ? "It only takes a few steps to join us, are you ready?"
                                     : "We're so excited to see you again!"}
                             </div>
                         </div>

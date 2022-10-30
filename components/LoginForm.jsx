@@ -1,5 +1,5 @@
 import { signIn } from "next-auth/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import InputField from "./InputField";
 import SimpleLoader from "./SimpleLoader";
 
@@ -12,29 +12,46 @@ export default function LoginForm() {
 
     const [errorMessage, setErrorMessage] = useState(false);
 
-    function triggerError(msg) {
-        setErrorMessage(msg);
+    useEffect(() => {
+        if (errorMessage) {
+            setTimeout(() => {
+                setErrorMessage(false);
+            }, 5000);
+        }
+    }, [errorMessage]);
 
-        setTimeout(() => {
-            setErrorMessage(false);
-        }, 5000);
+    function validateEmail(emailToCheck) {
+        const regex =
+            /[a-zA-Z0-9\.!#$%&'*+-/=?^_`{|}~"(),:;<>@\[\]]+@[a-z]+\.[a-zA-Z0-9\[\]-]{2,3}/;
+
+        return regex.test(emailToCheck);
     }
 
     async function handleSignIn() {
         setIsLoading(true);
 
+        if (!validateEmail(email)) {
+            setErrorMessage(
+                "The email entered does not comply with the required format"
+            );
+
+            setIsLoading(false);
+            return;
+        }
+
         await signIn("credentials", {
             email,
             password,
+            isRegistering: false,
             redirect: false,
         })
             .then((res) => {
                 if (res.error) {
-                    triggerError(res.error);
+                    setErrorMessage(res.error);
                 }
             })
             .catch((err) => {
-                triggerError(
+                setErrorMessage(
                     "There's been an error during the process, please try again"
                 );
             });

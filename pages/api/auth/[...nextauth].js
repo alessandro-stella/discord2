@@ -8,15 +8,17 @@ import findUser from "database/functions/findUser";
 export const authOptions = {
     providers: [
         CredentialsProvider({
-            async authorize(credentials, req) {
-                const { email, password, isRegistering } = credentials;
+            async authorize(credentials) {
+                const { email, password } = credentials;
+                const isRegistering = credentials.isRegistering === "true";
+
+                console.log({ email, password, isRegistering });
 
                 const response = await findUser(email, password);
+                console.log({ response });
 
-                if (!response) {
-                    throw new Error(
-                        "We haven't found any user with these credentials, check the email or the password and try again"
-                    );
+                if (response.error) {
+                    throw new Error(response.error);
                 }
 
                 return response.user;

@@ -1,5 +1,5 @@
 import { signIn } from "next-auth/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import InputField from "./InputField";
 import SimpleLoader from "./SimpleLoader";
 
@@ -10,33 +10,81 @@ export default function LoginForm() {
     const [confirmPassword, setConfirmPassword] = useState("");
 
     const [isPasswordShown, setIsPasswordShown] = useState(false);
+    const [isFormatShown, setIsFormatShown] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
     const [errorMessage, setErrorMessage] = useState(false);
 
-    function triggerError(msg) {
-        setErrorMessage(msg);
+    useEffect(() => {
+        if (errorMessage) {
+            setTimeout(() => {
+                setErrorMessage(false);
+            }, 5000);
+        }
+    }, [errorMessage]);
 
-        setTimeout(() => {
-            setErrorMessage(false);
-        }, 5000);
+    function validateEmail(emailToCheck) {
+        const regex =
+            /[a-zA-Z0-9\.!#$%&'*+-/=?^_`{|}~"(),:;<>@\[\]]+@[a-z]+\.[a-zA-Z0-9\[\]-]{2,3}/;
+
+        return regex.test(emailToCheck);
+    }
+
+    function validatePassword(password) {
+        const regex = new RegExp(
+            "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*-])(?=.{8,})"
+        );
+
+        return regex.test(password);
     }
 
     async function handleSignIn() {
+        if (
+            username === "" ||
+            email === "" ||
+            password === "" ||
+            confirmPassword === ""
+        ) {
+            setErrorMessage("Please complete all fields before continuing");
+
+            return;
+        }
+
+        if (!validateEmail(email)) {
+            setErrorMessage(
+                "The email entered does not comply with the required format"
+            );
+
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            setErrorMessage("The passwords entered do not match");
+
+            return;
+        }
+
+        if (!validatePassword(password)) {
+            setErrorMessage("The password does not follow the expected format");
+
+            return;
+        }
+
         setIsLoading(true);
 
         await signIn("credentials", {
             email,
             password,
+            isRegistering: true,
             redirect: false,
         })
             .then((res) => {
                 if (res.error) {
-                    triggerError(res.error);
+                    setErrorMessage(res.error);
                 }
             })
             .catch((err) => {
-                triggerError(
+                setErrorMessage(
                     "There's been an error during the process, please try again"
                 );
             });
@@ -78,6 +126,24 @@ export default function LoginForm() {
                     isPasswordShown={isPasswordShown}
                     setIsPasswordShown={setIsPasswordShown}
                 />
+
+                <div className="text-sm">
+                    <div
+                        onClick={() =>
+                            setIsFormatShown((isFormatShown) => !isFormatShown)
+                        }
+                        className="font-bold text-discordPurple hover:underline hover:decoration-discordPurple w-fit hover:cursor-pointer">
+                        Password format
+                    </div>
+
+                    {isFormatShown && (
+                        <div className="text-discordGrey-450 text-shadow">
+                            At least 8 characters in length, one lowercase
+                            letter, one uppercase letter, one number and one
+                            special character (!@#$-%^&*)
+                        </div>
+                    )}
+                </div>
 
                 {errorMessage && (
                     <div className="text-sm text-red-500 text-shadow">
