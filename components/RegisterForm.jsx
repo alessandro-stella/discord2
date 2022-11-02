@@ -25,15 +25,13 @@ export default function LoginForm() {
 
     function validateEmail(emailToCheck) {
         const regex =
-            /[a-zA-Z0-9\.!#$%&'*+-/=?^_`{|}~"(),:;<>@\[\]]+@[a-z]+\.[a-zA-Z0-9\[\]-]{2,3}/;
+            /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
 
         return regex.test(emailToCheck);
     }
 
     function validatePassword(password) {
-        const regex = new RegExp(
-            "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*-])(?=.{8,})"
-        );
+        const regex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})");
 
         return regex.test(password);
     }
@@ -73,6 +71,7 @@ export default function LoginForm() {
         setIsLoading(true);
 
         await signIn("credentials", {
+            username,
             email,
             password,
             isRegistering: true,
@@ -139,8 +138,9 @@ export default function LoginForm() {
                     {isFormatShown && (
                         <div className="text-discordGrey-450 text-shadow">
                             At least 8 characters in length, one lowercase
-                            letter, one uppercase letter, one number and one
-                            special character (!@#$-%^&*)
+                            letter, one uppercase letter, one number and
+                            (suggested but not obligatory) one special character
+                            (!@#$-%^&*)
                         </div>
                     )}
                 </div>

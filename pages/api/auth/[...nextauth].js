@@ -4,17 +4,19 @@ import GitHubProvider from "next-auth/providers/github";
 import SpotifyProvider from "next-auth/providers/spotify";
 import CredentialsProvider from "next-auth/providers/credentials";
 import findUser from "database/functions/findUser";
+import registerUser from "database/functions/registerUser";
 
 export const authOptions = {
     providers: [
         CredentialsProvider({
             async authorize(credentials) {
-                const { email, password } = credentials;
-                const isRegistering = credentials.isRegistering === "true";
+                const { username, email, password } = credentials;
 
-                console.log({ email, password, isRegistering });
+                const response =
+                    credentials.isRegistering === "true"
+                        ? await registerUser(username, email, password)
+                        : await findUser(email, password);
 
-                const response = await findUser(email, password);
                 console.log({ response });
 
                 if (response.error) {
@@ -40,14 +42,13 @@ export const authOptions = {
     secret: process.env.NEXTAUTH_SECRET,
     callbacks: {
         async signIn({ user, credentials }) {
-            console.log({ credentials, user });
-
             if (credentials) {
                 return user;
             }
 
             const { name, email: userEmail, image } = user;
             return { name, userEmail, image };
+            /* return "/completeRegistration"; */
         },
     },
     pages: {

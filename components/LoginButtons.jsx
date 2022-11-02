@@ -29,7 +29,6 @@ export default function LoginButtons({ providers, isRegistering }) {
                                 onClick={() =>
                                     signIn(provider.id, {
                                         isRegistering,
-                                        callbackUrl: `${server}/login`,
                                     })
                                 }
                                 className={`select-none text-sm flex items-center justify-center gap-2 py-2 transition-all shadow-md hover:shadow-xl hover:cursor-pointer rounded-md w-full ${

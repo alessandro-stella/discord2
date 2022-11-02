@@ -1,20 +1,28 @@
-import {Schema, model, models} from "mongoose";
-import Crypto from "crypto";
+import mongoose from "mongoose";
 
-const userSchema = new Schema(
+const generateRandomIdentifier = (chars, len) =>
+    "#" +
+    [...Array(len)]
+        .map((i) => chars[Math.floor(Math.random() * chars.length)])
+        .join("");
+
+const userSchema = new mongoose.Schema(
     {
         email: {
             type: String,
             required: true,
         },
-        password: String,
+        password: {
+            type: String,
+            required: true,
+        },
         username: {
             type: String,
             required: true,
         },
         identifier: {
             type: String,
-            default: generateIdentifier(),
+            default: generateRandomIdentifier("0123456789", 4),
         },
         channelsJoined: {
             type: Array,
@@ -24,14 +32,7 @@ const userSchema = new Schema(
     { timestamps: true }
 );
 
-function generateIdentifier() {
-    const code = Crypto.randomInt(0, 1000000).toString().padStart(4, "0");
-
-    return `#${code}`;
-}
-
-userSchema.index({ username: 1, identifier: 1 }, { unique: true });
-
-const User = models.verifiedUsers || model("verifiedUsers", userSchema, "verifiedUsers");
+userSchema.index({ email: 1 }, { unique: true });
+const User = mongoose.models.User || mongoose.model("User", userSchema);
 
 export default User;
