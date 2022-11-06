@@ -5,25 +5,22 @@ import SpotifyProvider from "next-auth/providers/spotify";
 import CredentialsProvider from "next-auth/providers/credentials";
 import findUser from "database/functions/findUser";
 import registerUser from "database/functions/registerUser";
+import getUserId from "database/functions/getUserId";
 
 export const authOptions = {
     providers: [
         CredentialsProvider({
             async authorize(credentials) {
-                const { username, email, password } = credentials;
-
-                const response =
+                const userData =
                     credentials.isRegistering === "true"
-                        ? await registerUser(username, email, password)
-                        : await findUser(email, password);
+                        ? await registerUser(credentials)
+                        : await findUser(credentials);
 
-                console.log({ response });
-
-                if (response.error) {
-                    throw new Error(response.error);
+                if (userData.error) {
+                    throw new Error(userData.error);
                 }
 
-                return response.user;
+                return { userData };
             },
         }),
         GoogleProvider({
@@ -41,14 +38,12 @@ export const authOptions = {
     ],
     secret: process.env.NEXTAUTH_SECRET,
     callbacks: {
-        async signIn({ user, credentials }) {
-            if (credentials) {
-                return user;
-            }
+        async jwt({ token, user }) {
+            return { ...token, ...user };
+        },
 
-            const { name, email: userEmail, image } = user;
-            return { name, userEmail, image };
-            /* return "/completeRegistration"; */
+        async session({ token }) {
+            return token;
         },
     },
     pages: {
