@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import InputField from "./InputField";
 import SimpleLoader from "./SimpleLoader";
 
-export default function LoginForm() {
+export default function RegisterForm({ propEmail = "", showEmail = true }) {
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -22,6 +22,12 @@ export default function LoginForm() {
             }, 5000);
         }
     }, [errorMessage]);
+
+    useEffect(() => {
+        if (propEmail === "") return;
+
+        setEmail(propEmail);
+    }, [propEmail]);
 
     function validateEmail(emailToCheck) {
         const regex =
@@ -101,12 +107,14 @@ export default function LoginForm() {
                     setValue={setUsername}
                 />
 
-                <InputField
-                    type="email"
-                    label="email"
-                    value={email}
-                    setValue={setEmail}
-                />
+                {showEmail && (
+                    <InputField
+                        type="email"
+                        label="email"
+                        value={email}
+                        setValue={setEmail}
+                    />
+                )}
 
                 <InputField
                     type={isPasswordShown ? "text" : "password"}

@@ -10,11 +10,36 @@ export default function Login({ providers, randomIndex }) {
     const router = useRouter();
     const { data: session, status } = useSession();
     const [isRegistering, setIsRegistering] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        if (status === "loading") return;
+        if (status === "authenticated") {
+            if (session.userData) {
+                router.push("/home");
+                return;
+            }
 
-        if (session) router.push("/home");
+            const processData = async () => {
+                let response;
+
+                response = await fetch("/api/getUserId", {
+                    headers: { email: session.email },
+                });
+
+                const userId = await response.json();
+
+                if (!userId) {
+                    router.push("/registration");
+                    return;
+                }
+
+                router.push("/home");
+            };
+
+            processData();
+        }
+
+        if (status === "unauthenticated") setIsLoading(false);
     }, [session, status, router]);
 
     return (
@@ -27,7 +52,7 @@ export default function Login({ providers, randomIndex }) {
                         ? " grid place-items-center"
                         : " flex flex-col"
                 }`}>
-                {status === "loading" ? (
+                {isLoading ? (
                     <CustomLoader />
                 ) : (
                     <>
@@ -44,41 +69,39 @@ export default function Login({ providers, randomIndex }) {
                             </div>
                         </div>
 
-                        {!session && (
-                            <div className="md:min-w-[40em] w-full m-auto h-fit flex-1 flex md:flex-row flex-col justify-center pt-2">
-                                <div className="w-full flex-[2.5]">
-                                    {isRegistering ? (
-                                        <RegisterForm />
-                                    ) : (
-                                        <LoginForm />
-                                    )}
-                                    <div className="flex gap-1 pt-2 pb-2 border-b-[1px] border-discordGrey-550 md:pb-0 md:border-r-[1px] md:border-b-0">
-                                        <div className="text-discordGrey-450 text-shadow">
-                                            {isRegistering
-                                                ? "Already a user?"
-                                                : "Not registered yet?"}
-                                        </div>
-                                        <div
-                                            onClick={() =>
-                                                setIsRegistering(
-                                                    (isRegistering) =>
-                                                        !isRegistering
-                                                )
-                                            }
-                                            className="font-bold text-discordPurple hover:underline hover:decoration-discordPurple w-fit hover:cursor-pointer">
-                                            {isRegistering
-                                                ? "Login now"
-                                                : "Join us now!"}
-                                        </div>
+                        <div className="md:min-w-[40em] w-full m-auto h-fit flex-1 flex md:flex-row flex-col justify-center pt-2">
+                            <div className="w-full flex-[2.5]">
+                                {isRegistering ? (
+                                    <RegisterForm />
+                                ) : (
+                                    <LoginForm />
+                                )}
+                                <div className="flex gap-1 pt-2 pb-2 border-b-[1px] border-discordGrey-550 md:pb-0 md:border-r-[1px] md:border-b-0">
+                                    <div className="text-discordGrey-450 text-shadow">
+                                        {isRegistering
+                                            ? "Already a user?"
+                                            : "Not registered yet?"}
+                                    </div>
+                                    <div
+                                        onClick={() =>
+                                            setIsRegistering(
+                                                (isRegistering) =>
+                                                    !isRegistering
+                                            )
+                                        }
+                                        className="font-bold text-discordPurple hover:underline hover:decoration-discordPurple w-fit hover:cursor-pointer">
+                                        {isRegistering
+                                            ? "Login now"
+                                            : "Join us now!"}
                                     </div>
                                 </div>
-
-                                <LoginButtons
-                                    providers={providers}
-                                    isRegistering={isRegistering}
-                                />
                             </div>
-                        )}
+
+                            <LoginButtons
+                                providers={providers}
+                                isRegistering={isRegistering}
+                            />
+                        </div>
                     </>
                 )}
             </div>
