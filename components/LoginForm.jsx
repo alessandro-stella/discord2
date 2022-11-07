@@ -28,16 +28,21 @@ export default function LoginForm() {
     }
 
     async function handleSignIn() {
-        setIsLoading(true);
+        if (email === "" || password === "") {
+            setErrorMessage("Please fill all fields before continuing");
+
+            return;
+        }
 
         if (!validateEmail(email)) {
             setErrorMessage(
                 "The email entered does not comply with the required format"
             );
 
-            setIsLoading(false);
             return;
         }
+
+        setIsLoading(true);
 
         await signIn("credentials", {
             email,

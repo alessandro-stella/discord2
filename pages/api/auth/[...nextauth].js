@@ -3,9 +3,8 @@ import GoogleProvider from "next-auth/providers/google";
 import GitHubProvider from "next-auth/providers/github";
 import SpotifyProvider from "next-auth/providers/spotify";
 import CredentialsProvider from "next-auth/providers/credentials";
-import findUser from "database/functions/findUser";
+import verifyUser from "database/functions/verifyUser";
 import registerUser from "database/functions/registerUser";
-import getUserId from "database/functions/getUserId";
 
 export const authOptions = {
     providers: [
@@ -14,7 +13,7 @@ export const authOptions = {
                 const userData =
                     credentials.isRegistering === "true"
                         ? await registerUser(credentials)
-                        : await findUser(credentials);
+                        : await verifyUser(credentials);
 
                 if (userData.error) {
                     throw new Error(userData.error);

@@ -49,7 +49,7 @@ export default function RegisterForm({ propEmail = "", showEmail = true }) {
             password === "" ||
             confirmPassword === ""
         ) {
-            setErrorMessage("Please complete all fields before continuing");
+            setErrorMessage("Please fill all fields before continuing");
 
             return;
         }
