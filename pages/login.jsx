@@ -1,10 +1,10 @@
+import CustomLoader from "components/CustomLoader.jsx";
 import LoginButtons from "components/LoginButtons";
+import LoginForm from "components/LoginForm";
+import RegisterForm from "components/RegisterForm";
 import { getProviders, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import CustomLoader from "components/CustomLoader.jsx";
-import RegisterForm from "components/RegisterForm";
-import LoginForm from "components/LoginForm";
 
 export default function Login({ providers, randomIndex }) {
     const router = useRouter();

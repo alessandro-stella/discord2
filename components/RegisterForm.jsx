@@ -1,9 +1,12 @@
-import { signIn } from "next-auth/react";
+import { signIn, signOut } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import InputField from "./InputField";
 import SimpleLoader from "./SimpleLoader";
 
 export default function RegisterForm({ propEmail = "", showEmail = true }) {
+    const router = useRouter();
+
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -97,8 +100,18 @@ export default function RegisterForm({ propEmail = "", showEmail = true }) {
         setIsLoading(false);
     }
 
+    async function handleGoBack() {
+        await signOut({ redirect: false });
+        router.push("/login");
+    }
+
     return (
-        <div className="flex flex-col items-center justify-center md:border-r-[1px] border-discordGrey-550 md:pr-2">
+        <div
+            className={`flex flex-col items-center justify-center${
+                showEmail
+                    ? " md:border-r-[1px] border-discordGrey-550 md:pr-2"
+                    : ""
+            }`}>
             <div className="flex flex-col w-full gap-2">
                 <InputField
                     type="text"
@@ -159,10 +172,19 @@ export default function RegisterForm({ propEmail = "", showEmail = true }) {
                     </div>
                 )}
 
-                <div
-                    onClick={() => handleSignIn()}
-                    className="py-2 mt-1 text-center text-white uppercase transition-all rounded-sm shadow-md select-none bg-discordPurple hover:shadow-xl hover:cursor-pointer">
-                    {isLoading ? <SimpleLoader /> : "register"}
+                <div className="flex flex-col gap-2 mt-1 md:flex-row">
+                    <div
+                        onClick={() => handleSignIn()}
+                        className="grid w-full py-2 text-center text-white uppercase transition-all rounded-sm shadow-md select-none bg-discordPurple hover:shadow-xl hover:cursor-pointer place-content-center">
+                        {isLoading ? <SimpleLoader /> : "register"}
+                    </div>
+                    {!showEmail && (
+                        <div
+                            onClick={() => handleGoBack()}
+                            className="py-2 text-center text-discordPurple uppercase transition-all rounded-sm shadow-md select-none border-discordPurple border-[3px] font-semibold hover:shadow-xl hover:cursor-pointer w-full grid place-content-center">
+                            Go back
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

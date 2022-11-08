@@ -94,12 +94,12 @@ select {
     display: inline-block;
     position: relative;
     width: 1.95em;
-    height: 1em;
+    height: 1.5em;
 }
 
 .lds-ellipsis div {
     position: absolute;
-    top: 0.35em;
+    top: 0.5em;
     width: 0.325em;
     height: 0.325em;
     border-radius: 50%;
