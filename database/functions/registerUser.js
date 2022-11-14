@@ -22,6 +22,7 @@ export default async function registerUser({ username, email, password }) {
         username: newUser.username,
         id: newUser._id,
         identifier: newUser.identifier,
+        guilds: newUser.guildsJoined,
         error: newUser.error,
     };
 }

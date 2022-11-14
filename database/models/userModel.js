@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema(
             type: String,
             default: "",
         },
-        channelsJoined: {
+        guildsJoined: {
             type: Array,
             default: [],
         },

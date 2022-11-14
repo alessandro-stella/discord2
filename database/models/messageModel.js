@@ -7,7 +7,7 @@ const messageSchema = new Schema(
             required: true,
         },
 
-        channelId: {
+        guildId: {
             type: String,
             required: true,
         },

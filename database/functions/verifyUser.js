@@ -30,6 +30,7 @@ export default async function verifyUser({ email, password }) {
         username: userData.username,
         id: userData._id,
         identifier: userData.identifier,
+        guilds: userData.guildsJoined,
         error: userData.error,
     };
 }
