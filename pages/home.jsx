@@ -1,8 +1,9 @@
-import GuildIcon from "components/GuildIcon";
+import CreateGuildForm from "components/CreateGuildForm";
+import Guild from "components/home/Guild";
+import SideBar from "components/home/SideBar";
 import { signOut, useSession } from "next-auth/react";
-import Image from "next/image";
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Home() {
     const router = useRouter();
@@ -10,7 +11,9 @@ export default function Home() {
 
     const [userData, setUserData] = useState("loading");
     const [guilds, setGuilds] = useState("loading");
-    const [selectedGuild, setSelectedGuild] = useState(false);
+    const [selectedGuild, setSelectedGuild] = useState("none");
+
+    const [isCreatingGuild, setIsCreatingGuild] = useState(false);
 
     // Get user data
     useEffect(() => {
@@ -51,93 +54,52 @@ export default function Home() {
         }
     }, [status, session, router]);
 
-    function createNewGuild() {
+    const createNewGuild = (guildName) => {
         const createG = async () => {
             let guildData = await fetch("/api/createGuild", {
-                headers: { name: "Salamella", ownerId: userData.id },
+                headers: { name: guildName, ownerId: userData.id },
             });
 
             guildData = await guildData.json();
 
             setGuilds([...guilds, guildData]);
+            setIsCreatingGuild(false);
         };
 
         createG();
-    }
-
-    const handleChangeGuild = useCallback(
-        (guildId) => {
-            setSelectedGuild(guildId);
-        },
-        [selectedGuild]
-    );
+    };
 
     return (
         <div>
+            {isCreatingGuild && (
+                <CreateGuildForm
+                    create={createNewGuild}
+                    setIsCreatingGuild={setIsCreatingGuild}
+                />
+            )}
+
             {status === "loading" || userData === "loading" ? (
                 "Loading"
             ) : (
                 <div className="flex flex-col gap-4 p-2">
-                    <div>
-                        {userData.image && (
-                            <div className="relative w-16 h-16 overflow-hidden rounded-full">
-                                <Image
-                                    src={userData.image}
-                                    layout="fill"
-                                    alt="userImage"
-                                />
-                            </div>
-                        )}
-                        <div>
-                            {userData.username}
-                            {userData.identifier}
-                        </div>
-                        <div>{userData.id}</div>
-                    </div>
-
-                    <div className="p-2 bg-green-400 w-fit flex flex-col gap-2">
+                    <>
                         {guilds === "loading" ? (
                             "Loading"
                         ) : (
-                            <>
-                                {guilds.length !== 0 && (
-                                    <div className="flex flex-col gap-2">
-                                        {guilds.map((guildData, index) => (
-                                            <GuildIcon
-                                                key={index}
-                                                guildData={guildData}
-                                                selectedGuild={selectedGuild}
-                                                selectGuild={handleChangeGuild}
-                                            />
-                                        ))}
-                                    </div>
-                                )}
-                            </>
+                            <SideBar
+                                guilds={guilds}
+                                selectedGuild={selectedGuild}
+                                selectGuild={setSelectedGuild}
+                                createGuild={() => setIsCreatingGuild(true)}
+                            />
                         )}
 
-                        <div
-                            onClick={() => createNewGuild()}
-                            className="p-2 bg-amber-400 w-fit cursor-pointer hover:shadow-2xl hover:shadow-amber-600">
-                            New Guild
-                        </div>
-                    </div>
-
-                    {selectedGuild && (
-                        <div>Selected guild: {selectedGuild} </div>
-                    )}
-
-                    <div>
-                        <div>E togliti su</div>
-                        <button
-                            onClick={() =>
-                                signOut({
-                                    redirect: false,
-                                    callbackUrl: "/login",
-                                })
-                            }>
-                            Sign Out
-                        </button>
-                    </div>
+                        {selectedGuild !== "none" ? (
+                            <Guild guildId={selectedGuild} />
+                        ) : (
+                            <div>No guild selected</div>
+                        )}
+                    </>
                 </div>
             )}
         </div>
