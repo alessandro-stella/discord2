@@ -81,7 +81,7 @@ export default function Home() {
             {status === "loading" || userData === "loading" ? (
                 "Loading"
             ) : (
-                <div className="flex flex-col gap-4 p-2">
+                <div className="flex flex-col gap-4">
                     <>
                         {guilds === "loading" ? (
                             "Loading"

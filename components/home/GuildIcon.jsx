@@ -33,8 +33,16 @@ export default function GuildIcon({ guildData, selectGuild, selectedGuild }) {
             ) : (
                 <div
                     onClick={() => selectGuild(data.id)}
-                    className="p-2 shadow-none transition-all hover:cursor-pointer hover:shadow-md hover:shadow-cyan-800 bg-cyan-500 w-fit">
-                    <div>Guild name: {data.name}</div>
+                    className="relative w-full overflow-hidden aspect-square hover:overflow-visible transition-all">
+                    <div className="absolute grid ml-4 left-full place-content-center h-full">
+                        <div className="bg-green-400 p-2">{data.name}</div>
+                    </div>
+
+                    <div className="w-full h-full p-2">
+                        <div className="rounded-full bg-cyan-400 h-full w-full grid place-content-center hover:cursor-pointer">
+                            {data.name[0]}
+                        </div>
+                    </div>
                 </div>
             )}
         </>
