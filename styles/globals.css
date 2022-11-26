@@ -151,3 +151,47 @@ select {
         transform: translate(0.6em, 0);
     }
 }
+
+:root {
+    --discord-grey-950: #0c0d0e;
+    --discord-grey-900: #171a1c;
+    --discord-grey-850: #232629;
+    --discord-grey-800: #2f3337;
+    --discord-grey-750: #3b4045;
+    --discord-grey-700: #464d53;
+    --discord-grey-650: #525960;
+    --discord-grey-600: #5e666e;
+    --discord-grey-550: #6a737c;
+    --discord-grey-500: #75808a;
+    --discord-grey-450: #838c95;
+    --discord-grey-400: #9199a1;
+    --discord-grey-350: #9fa6ad;
+    --discord-grey-300: #acb3b9;
+    --discord-grey-250: #babfc4;
+    --discord-grey-200: #c8ccd0;
+    --discord-grey-150: #d6d9dc;
+    --discord-grey-100: #e3e6e8;
+    --discord-grey-50: #f1f2f3;
+
+    --discord-purple: #7289da;
+
+    --github: #1b1f23;
+    --spotify: #1ed760;
+    --google: #fff;
+}
+
+.guild-label::before {
+    height: 20%;
+    aspect-ratio: 1/1;
+    content: "";
+    background-color: var(--discord-grey-850);
+
+    position: absolute;
+    top: 40%;
+    left: 0;
+
+    z-index: -1;
+
+    transform: rotate(45deg);
+    transform-origin: top left;
+}
