@@ -1,9 +1,6 @@
-import connectMongo from "database/connectMongo";
 import User from "database/models/userModel";
 
 export default async function registerUser({ username, email, password }) {
-    await connectMongo();
-
     const userExists = await User.findOne({ email });
 
     if (userExists) {

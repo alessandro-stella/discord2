@@ -1,9 +1,6 @@
-import connectMongo from "database/connectMongo";
 import User from "database/models/userModel";
 
 export default async function verifyUser({ email, password }) {
-    await connectMongo();
-
     const userData = await User.findOne({ email })
         .then(async (user) => {
             if (!user) {

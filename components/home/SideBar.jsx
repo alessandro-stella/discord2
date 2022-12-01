@@ -18,7 +18,7 @@ export default function SideBar({
                 selectGuild={selectGuild}
             />
 
-            {guilds.length !== "none" && (
+            {guilds.length !== 0 && (
                 <>
                     {guilds.map((guildData, index) => (
                         <GuildIcon
@@ -32,9 +32,21 @@ export default function SideBar({
             )}
 
             <div
-                onClick={createGuild}
-                className="p-2 transition-all shadow-none cursor-pointer bg-amber-400 w-fit hover:shadow-md hover:shadow-amber-600">
-                New Guild
+                onClick={() => createGuild()}
+                className="relative w-full overflow-hidden transition-all aspect-square hover:overflow-visible">
+                <div className="absolute grid h-full ml-4 left-full place-content-center">
+                    <div className="bg-discordGrey-850 rounded-md text-discordGrey-50 z-[100] p-2 relative guild-label">
+                        Create guild
+                    </div>
+                </div>
+
+                <div className="w-full px-1 py-1">
+                    <div
+                        className="text-shh-full w-full aspect-square grid place-content-center hover:cursor-pointer relative rounded-full hover:rounded-[1.25em] bg-discordGrey-650
+                    hover:bg-green-500 transition-all cross-parent">
+                        <div className="cross" />
+                    </div>
+                </div>
             </div>
         </div>
     );

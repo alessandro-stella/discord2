@@ -8,7 +8,6 @@ export default function GuildIcon({ guildData, selectGuild, selectedGuild }) {
     useEffect(() => {
         const getData = async () => {
             if (guildData.id) {
-                console.log("Setting data to what has been passed");
                 setData({ ...guildData });
                 return;
             }
@@ -23,7 +22,7 @@ export default function GuildIcon({ guildData, selectGuild, selectedGuild }) {
                 setData({ ...response });
             } else {
                 setData({ name: "ERROR" });
-            }
+            }   
         };
 
         getData();
@@ -38,7 +37,7 @@ export default function GuildIcon({ guildData, selectGuild, selectedGuild }) {
     return (
         <div
             onClick={() => handleClick()}
-            className="relative w-full overflow-hidden transition-all aspect-square hover:overflow-visible ">
+            className="relative w-full overflow-hidden transition-all aspect-square hover:overflow-visible">
             <div className="absolute grid h-full ml-4 left-full place-content-center">
                 <div className="bg-discordGrey-850 rounded-md text-discordGrey-50 z-[100] p-2 relative guild-label">
                     {data === "loading" ? "Loading..." : data.name}
@@ -51,7 +50,7 @@ export default function GuildIcon({ guildData, selectGuild, selectedGuild }) {
                         selectedGuild !== data.id
                             ? " rounded-full hover:rounded-[1.25em] bg-discordGrey-650 hover:bg-discordPurple"
                             : " rounded-2xl bg-discordPurple"
-                    } transition-all duration-300`}>
+                    } transition-all`}>
                     {data === "loading" ? (
                         <SimpleLoader />
                     ) : (

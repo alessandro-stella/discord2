@@ -1,10 +1,7 @@
-import connectMongo from "database/connectMongo";
 import Guild from "database/models/guildModel";
 import User from "database/models/userModel";
 
 export default async function createGuild(name, ownerId) {
-    await connectMongo();
-
     const newGuildData = await Guild.create({ name, ownerId })
         .then(async (data) => {
             try {

@@ -44,15 +44,35 @@ export default function Home() {
 
                 const data = await response.json();
                 setUserData(data);
-                setGuilds(data.guilds);
+
+                const guilds = await fetchGuilds(data.guilds);
+                setGuilds(guilds);
             };
 
             processData();
         } else {
-            setUserData(session.userData);
-            setGuilds(session.userData.guilds);
+            const processData = async () => {
+                setUserData(session.userData);
+
+                const guilds = await fetchGuilds(session.userData.guilds);
+                setGuilds(guilds);
+            };
+
+            processData();
         }
     }, [status, session, router]);
+
+    async function fetchGuilds(guildIds) {
+        if (guildIds.length === 0) return [];
+
+        const response = await fetch("/api/getGuildsForSidebar", {
+            headers: { userGuilds: guildIds },
+        });
+
+        const guilds = await response.json();
+
+        return guilds;
+    }
 
     const createNewGuild = (guildName) => {
         const createG = async () => {
@@ -102,6 +122,13 @@ export default function Home() {
                     </>
                 </div>
             )}
+
+            <div
+                onClick={() =>
+                    signOut({ redirect: false, callback: "/login" })
+                }>
+                Logout
+            </div>
         </div>
     );
 }
