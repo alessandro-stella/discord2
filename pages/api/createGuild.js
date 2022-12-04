@@ -1,4 +1,4 @@
-import createGuild from "database/functions/createGuild";
+import createGuild from "database/functions/guilds/createGuild";
 
 export default async (req, res) => {
     const { name, ownerid: ownerId } = req.headers;

@@ -28,7 +28,10 @@ export default function Home() {
                 let response;
 
                 response = await fetch("/api/getUserId", {
-                    headers: { email: session.email },
+                    headers: {
+                        "Content-Type": "application/json",
+                        email: session.email,
+                    },
                 });
 
                 const userId = await response.json();
@@ -39,7 +42,10 @@ export default function Home() {
                 }
 
                 response = await fetch("/api/findUser", {
-                    headers: { userId: userId },
+                    headers: {
+                        "Content-Type": "application/json",
+                        userId: userId,
+                    },
                 });
 
                 const data = await response.json();
@@ -66,7 +72,10 @@ export default function Home() {
         if (guildIds.length === 0) return [];
 
         const response = await fetch("/api/getGuildsForSidebar", {
-            headers: { userGuilds: guildIds },
+            headers: {
+                "Content-Type": "application/json",
+                userGuilds: guildIds,
+            },
         });
 
         const guilds = await response.json();
@@ -77,7 +86,11 @@ export default function Home() {
     const createNewGuild = (guildName) => {
         const createG = async () => {
             let guildData = await fetch("/api/createGuild", {
-                headers: { name: guildName, ownerId: userData.id },
+                headers: {
+                    "Content-Type": "application/json",
+                    name: guildName,
+                    ownerId: userData.id,
+                },
             });
 
             guildData = await guildData.json();

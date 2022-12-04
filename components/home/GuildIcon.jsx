@@ -13,7 +13,11 @@ export default function GuildIcon({ guildData, selectGuild, selectedGuild }) {
             }
 
             let response = await fetch("/api/getGuildInfo", {
-                headers: { guildId: guildData },
+                headers: {
+                    "Content-Type": "application/json",
+                    "Content-Type": "application/json",
+                    guildId: guildData,
+                },
             });
 
             response = await response.json();
@@ -22,7 +26,7 @@ export default function GuildIcon({ guildData, selectGuild, selectedGuild }) {
                 setData({ ...response });
             } else {
                 setData({ name: "ERROR" });
-            }   
+            }
         };
 
         getData();
@@ -56,7 +60,7 @@ export default function GuildIcon({ guildData, selectGuild, selectedGuild }) {
                     ) : (
                         <>
                             {data.icon ? (
-                                <div className="p-[1em] w-full h-full relative">
+                                <div className="p-[1em] w-full h-full relative select-none">
                                     <Image
                                         alt={data.name[0]}
                                         src={data.icon}
@@ -64,7 +68,9 @@ export default function GuildIcon({ guildData, selectGuild, selectedGuild }) {
                                     />
                                 </div>
                             ) : (
-                                data.name[0]
+                                <div className="select-none">
+                                    {data.name[0]}
+                                </div>
                             )}
                         </>
                     )}

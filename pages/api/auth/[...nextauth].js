@@ -3,8 +3,8 @@ import GoogleProvider from "next-auth/providers/google";
 import GitHubProvider from "next-auth/providers/github";
 import SpotifyProvider from "next-auth/providers/spotify";
 import CredentialsProvider from "next-auth/providers/credentials";
-import verifyUser from "database/functions/verifyUser";
-import registerUser from "database/functions/registerUser";
+import verifyUser from "database/functions/authentication/verifyUser";
+import registerUser from "database/functions/authentication/registerUser";
 
 export const authOptions = {
     providers: [

@@ -1,4 +1,4 @@
-import getUserId from "database/functions/getUserId";
+import getUserId from "database/functions/authentication/getUserId";
 
 export default async (req, res) => {
     const data = await getUserId(req.headers.email);

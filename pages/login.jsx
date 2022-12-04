@@ -15,7 +15,7 @@ export default function Login({ providers, randomIndex }) {
     useEffect(() => {
         if (status === "authenticated") {
             if (session.userData) {
-                router.push("/home");
+                router.push("/app");
                 return;
             }
 
@@ -23,7 +23,10 @@ export default function Login({ providers, randomIndex }) {
                 let response;
 
                 response = await fetch("/api/getUserId", {
-                    headers: { email: session.email },
+                    headers: {
+                        "Content-Type": "application/json",
+                        email: session.email,
+                    },
                 });
 
                 const userId = await response.json();
@@ -33,7 +36,7 @@ export default function Login({ providers, randomIndex }) {
                     return;
                 }
 
-                router.push("/home");
+                router.push("/app");
             };
 
             processData();

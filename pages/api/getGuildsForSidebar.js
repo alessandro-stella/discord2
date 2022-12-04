@@ -1,4 +1,4 @@
-import getGuildsForSidebar from "database/functions/getGuildsForSidebar";
+import getGuildsForSidebar from "database/functions/guilds/getGuildsForSidebar";
 
 export default async (req, res) => {
     const guildIds = req.headers.userguilds;

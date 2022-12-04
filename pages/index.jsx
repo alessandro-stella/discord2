@@ -10,7 +10,7 @@ export default function Index() {
     useEffect(() => {
         if (status === "loading") return;
 
-        if (session) router.push("/home");
+        if (session) router.push("/app");
         else router.push("/login");
     });
 

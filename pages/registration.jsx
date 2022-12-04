@@ -18,19 +18,22 @@ export default function Registration({ randomIndex }) {
         }
 
         if (session.userData) {
-            router.push("/home");
+            router.push("/app");
             return;
         }
 
         const checkUser = async () => {
             const response = await fetch("/api/getUserId", {
-                headers: { email: session.email },
+                headers: {
+                    "Content-Type": "application/json",
+                    email: session.email,
+                },
             });
 
             let userId = await response.json();
 
             if (userId) {
-                router.push("/home");
+                router.push("/app");
                 return;
             }
 
