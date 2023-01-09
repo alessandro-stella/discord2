@@ -1,5 +1,8 @@
+import CustomLoader from "components/CustomLoader";
 import SimpleLoader from "components/SimpleLoader";
 import { useEffect, useState } from "react";
+import GuildChannels from "./GuildChannels";
+import Messages from "./Messages";
 
 export default function Guild({ guildId }) {
     const [isLoading, setIsLoading] = useState(true);
@@ -24,11 +27,14 @@ export default function Guild({ guildId }) {
     }, [guildData]);
 
     return (
-        <div className="bg-violet-500">
+        <div className="bg-violet-500 flex-1 flex ">
             {isLoading ? (
-                <SimpleLoader />
+                <CustomLoader />
             ) : (
-                <>SelectedGuild: {guildData.name}</>
+                <>
+                    <GuildChannels />
+                    <Messages />
+                </>
             )}
         </div>
     );

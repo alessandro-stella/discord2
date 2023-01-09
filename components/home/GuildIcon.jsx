@@ -15,7 +15,6 @@ export default function GuildIcon({ guildData, selectGuild, selectedGuild }) {
             let response = await fetch("/api/getGuildInfo", {
                 headers: {
                     "Content-Type": "application/json",
-                    "Content-Type": "application/json",
                     guildId: guildData,
                 },
             });

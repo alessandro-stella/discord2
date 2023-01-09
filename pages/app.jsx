@@ -1,7 +1,7 @@
 import CreateGuildForm from "components/CreateGuildForm";
 import Guild from "components/home/Guild";
 import SideBar from "components/home/SideBar";
-import { signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
@@ -15,7 +15,6 @@ export default function Home() {
 
     const [isCreatingGuild, setIsCreatingGuild] = useState(false);
 
-    // Get user data
     useEffect(() => {
         if (status === "loading") return;
         if (!session) {
@@ -53,6 +52,8 @@ export default function Home() {
 
                 const guilds = await fetchGuilds(data.guilds);
                 setGuilds(guilds);
+
+                setSelectedGuild(guilds[0].guildId);
             };
 
             processData();
@@ -62,6 +63,8 @@ export default function Home() {
 
                 const guilds = await fetchGuilds(session.userData.guilds);
                 setGuilds(guilds);
+
+                setSelectedGuild(guilds[0].guildId);
             };
 
             processData();
@@ -103,45 +106,36 @@ export default function Home() {
     };
 
     return (
-        <div>
-            {isCreatingGuild && (
-                <CreateGuildForm
-                    create={createNewGuild}
-                    setIsCreatingGuild={setIsCreatingGuild}
-                />
-            )}
-
+        <div className="bg-cyan-300 flex h-screen">
             {status === "loading" || userData === "loading" ? (
                 "Loading"
             ) : (
-                <div className="flex flex-col gap-4">
-                    <>
-                        {guilds === "loading" ? (
-                            "Loading"
-                        ) : (
-                            <SideBar
-                                guilds={guilds}
-                                selectedGuild={selectedGuild}
-                                selectGuild={setSelectedGuild}
-                                createGuild={() => setIsCreatingGuild(true)}
-                            />
-                        )}
+                <>
+                    {isCreatingGuild && (
+                        <CreateGuildForm
+                            create={createNewGuild}
+                            setIsCreatingGuild={setIsCreatingGuild}
+                        />
+                    )}
 
-                        {selectedGuild !== "none" ? (
-                            <Guild guildId={selectedGuild} />
-                        ) : (
-                            <div>No guild selected</div>
-                        )}
-                    </>
-                </div>
+                    {guilds === "loading" ? (
+                        "Loading"
+                    ) : (
+                        <SideBar
+                            guilds={guilds}
+                            selectedGuild={selectedGuild}
+                            selectGuild={setSelectedGuild}
+                            createGuild={() => setIsCreatingGuild(true)}
+                        />
+                    )}
+
+                    {selectedGuild !== "none" ? (
+                        <Guild guildId={selectedGuild} />
+                    ) : (
+                        <div>DM!</div>
+                    )}
+                </>
             )}
-
-            <div
-                onClick={() =>
-                    signOut({ redirect: false, callback: "/login" })
-                }>
-                Logout
-            </div>
         </div>
     );
 }
