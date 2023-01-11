@@ -30,10 +30,6 @@ export default function SideBar({
         }, 500);
     };
 
-    useEffect(() => {
-        console.log(labelData);
-    }, [labelData]);
-
     return (
         <div className="relative h-full flex flex-col w-[4.5em] px-2 bg-discordGrey-850">
             {labelData.text !== "" && !isScrolling ? (

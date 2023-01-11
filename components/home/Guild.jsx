@@ -17,10 +17,6 @@ export default function Guild({ guildId }) {
         getGuildData();
     }, [guildId]);
 
-    useEffect(() => {
-        console.log(guildData.name);
-    }, [guildData]);
-
     return (
         <div className="bg-violet-500 flex-1 flex">
             <div>{guildData.name ?? "NO NAME"}</div>

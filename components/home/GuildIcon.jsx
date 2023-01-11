@@ -9,7 +9,7 @@ export default function GuildIcon({
     setLabelData,
 }) {
     const [data, setData] = useState("loading");
-    
+
     useEffect(() => {
         const getData = async () => {
             if (guildData.id) {
@@ -45,7 +45,12 @@ export default function GuildIcon({
         let scrollTop = window.pageYOffset || docEl.scrollTop || body.scrollTop;
         let clientTop = docEl.clientTop || body.clientTop || 0;
         let top = box.top + scrollTop - clientTop;
-        return Math.round(top);
+        let style = window
+            .getComputedStyle(icon.current, null)
+            .getPropertyValue("font-size");
+        let fontSize = parseFloat(style);
+
+        return Math.round(top + fontSize * 1.5);
     }
 
     const handleClick = () => {

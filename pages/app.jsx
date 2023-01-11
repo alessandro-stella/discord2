@@ -101,10 +101,6 @@ export default function Home() {
         createG();
     };
 
-    useEffect(() => {
-        console.log({ selectedGuild });
-    }, [selectedGuild]);
-
     return (
         <div className="bg-cyan-300 flex h-screen">
             {status === "loading" || userData === "loading" ? (
