@@ -52,8 +52,6 @@ export default function Home() {
 
                 const guilds = await fetchGuilds(data.guilds);
                 setGuilds(guilds);
-
-                setSelectedGuild(guilds[0].guildId);
             };
 
             processData();
@@ -63,8 +61,6 @@ export default function Home() {
 
                 const guilds = await fetchGuilds(session.userData.guilds);
                 setGuilds(guilds);
-
-                setSelectedGuild(guilds[0].guildId);
             };
 
             processData();
@@ -105,6 +101,10 @@ export default function Home() {
         createG();
     };
 
+    useEffect(() => {
+        console.log({ selectedGuild });
+    }, [selectedGuild]);
+
     return (
         <div className="bg-cyan-300 flex h-screen">
             {status === "loading" || userData === "loading" ? (
@@ -129,11 +129,13 @@ export default function Home() {
                         />
                     )}
 
-                    {selectedGuild !== "none" ? (
-                        <Guild guildId={selectedGuild} />
-                    ) : (
-                        <div>DM!</div>
-                    )}
+                    {/* <Guild
+                        guildId={
+                            selectedGuild !== "none"
+                                ? selectedGuild
+                                : "637297706f6a3a60f5aa4344"
+                        }
+                    /> */}
                 </>
             )}
         </div>
