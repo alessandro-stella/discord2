@@ -84,7 +84,7 @@ export default function GuildIcon({
                     onFocus={showLabel}
                     onMouseEnter={showLabel}
                     onClick={showLabel}
-                    /* onMouseLeave={hideLabel} */
+                    onMouseLeave={hideLabel}
                     ref={icon}
                     className={`text-discordGrey-100 text-shadow h-full w-full aspect-square grid place-content-center hover:cursor-pointer relative ${
                         selectedGuild !== data.id
