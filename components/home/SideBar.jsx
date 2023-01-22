@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
-import GuildIcon from "./GuildIcon";
-import Label from "./ServerLabel";
+import GuildIcon from "../GuildIcon";
+import Label from "../ServerLabel";
+import { IoIosAdd } from "react-icons/io";
+import CreateGuildIcon from "components/CreateGuildIcon";
 
 export default function SideBar({
     guilds,
@@ -19,6 +21,13 @@ export default function SideBar({
     const handleScroll = () => {
         if (!isScrolling) {
             setIsScrolling(true);
+        }
+
+        if (labelData.text !== "") {
+            setLabelData({
+                text: "",
+                distanceFromTop: 0,
+            });
         }
 
         if (timeout !== null) {
@@ -45,7 +54,7 @@ export default function SideBar({
                 <GuildIcon
                     guildData={{
                         id: "none",
-                        name: "Home",
+                        name: "Messaggi diretti",
                         icon: "/discordLogo.svg",
                     }}
                     selectedGuild={selectedGuild}
@@ -69,25 +78,10 @@ export default function SideBar({
                     </>
                 )}
 
-                <div className="bg-discordGrey-750 mx-1 h-[0.125em]" />
+                <div className="bg-discordGrey-750 my-1 mx-3 h-[0.125em]" />
 
-                <div
-                    onClick={() => createGuild()}
-                    className="relative w-full overflow-hidden transition-all aspect-square hover:overflow-visible">
-                    <div className="absolute grid h-full ml-4 left-full place-content-center">
-                        <div className="bg-discordGrey-850 rounded-md text-discordGrey-50 z-[100] p-2 relative guild-label">
-                            Create guild
-                        </div>
-                    </div>
-
-                    <div className="w-full px-1 py-1">
-                        <div
-                            className="text-shh-full w-full aspect-square grid place-content-center hover:cursor-pointer relative rounded-full hover:rounded-[1.25em] bg-discordGrey-650
-                    hover:bg-green-500 transition-all cross-parent">
-                            <div className="cross" />
-                        </div>
-                    </div>
-                </div>
+                <CreateGuildIcon setLabelData={setLabelData} createGuild={createGuild} />
+                
             </div>
         </div>
     );

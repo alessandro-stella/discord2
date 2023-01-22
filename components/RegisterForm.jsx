@@ -175,13 +175,13 @@ export default function RegisterForm({ propEmail = "", showEmail = true }) {
                 <div className="flex flex-col gap-2 mt-1 md:flex-row">
                     <div
                         onClick={() => handleSignIn()}
-                        className="grid w-full py-2 text-center text-white uppercase transition-all rounded-sm shadow-md select-none bg-discordPurple hover:shadow-xl hover:cursor-pointer place-content-center">
+                        className="text-white grid w-full py-2 text-center uppercase hover:brightness-110 transition-all rounded-sm shadow-md select-none bg-discordPurple hover:shadow-xl hover:cursor-pointer place-content-center">
                         {isLoading ? <SimpleLoader /> : "register"}
                     </div>
                     {!showEmail && (
                         <div
                             onClick={() => handleGoBack()}
-                            className="py-2 text-center text-discordPurple uppercase transition-all rounded-sm shadow-md select-none border-discordPurple border-[3px] font-semibold hover:shadow-xl hover:cursor-pointer w-full grid place-content-center">
+                            className="py-2 text-center text-discordPurple hover:bg-discordPurple hover:bg-opacity-[15%] uppercase transition-all rounded-sm shadow-md select-none border-discordPurple border-[3px] font-semibold hover:shadow-xl hover:cursor-pointer w-full grid place-content-center">
                             Go back
                         </div>
                     )}
