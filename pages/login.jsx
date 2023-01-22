@@ -47,7 +47,7 @@ export default function Login({ providers, randomIndex }) {
 
     return (
         <div
-            className="relative flex items-center justify-center w-screen min-h-screen bg-center bg-no-repeat h-fit bg-discordGrey-700"
+            className="relative flex items-center justify-center w-screen min-h-screen bg-center bg-no-repeat h-fit bg-discordGrey-700 text-white"
             style={{ backgroundImage: `url('/bg${randomIndex}.png')` }}>
             <div
                 className={`bg-discordGrey-700 m-4 p-8 shadow-xl rounded-md max-w-[50em] md:min-w-[40em] w-full max-h-[50em]${

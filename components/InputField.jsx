@@ -10,7 +10,7 @@ export default function InputField({
 }) {
     return (
         <div className="w-full relative">
-            <div className="text-sm text-discordGrey-450 text-shadow">
+            <div className="text-sm text-discordGrey-450 text-shadow mb-1">
                 {label.toUpperCase()}
             </div>
             <input

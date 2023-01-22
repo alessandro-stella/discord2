@@ -1,16 +1,15 @@
 import { signIn } from "next-auth/react";
 import Image from "next/image";
-import server from "server.js";
 
 export default function LoginButtons({ providers, isRegistering }) {
     const styles = {
-        google: { button: "bg-google", icon: "" },
+        google: { button: "bg-google text-black", icon: "" },
         github: {
-            button: "bg-github text-white",
+            button: "bg-github",
             icon: "grayscale brightness-[5000]",
         },
         spotify: {
-            button: "bg-spotify text-white",
+            button: "bg-spotify",
             icon: "grayscale brightness-[5000]",
         },
     };

@@ -1,6 +1,8 @@
 import CreateGuildForm from "components/CreateGuildForm";
+import DeleteGuildPopup from "components/DeleteGuildPopup";
 import Guild from "components/home/Guild";
 import SideBar from "components/home/SideBar";
+import Overlay from "components/Overlay";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -14,6 +16,10 @@ export default function Home() {
     const [selectedGuild, setSelectedGuild] = useState("none");
 
     const [isCreatingGuild, setIsCreatingGuild] = useState(false);
+    const [creationIsLoading, setCreationIsLoading] = useState(false);
+    const [creationError, setCreationError] = useState("");
+
+    const [isDeletingGuild, setIsDeletingGuild] = useState({});
 
     useEffect(() => {
         if (status === "loading") return;
@@ -67,6 +73,13 @@ export default function Home() {
         }
     }, [status, session, router]);
 
+    useEffect(() => {
+        if (!isCreatingGuild) {
+            setCreationIsLoading(false);
+            setCreationError("");
+        }
+    }, [isCreatingGuild]);
+
     async function fetchGuilds(guildIds) {
         if (guildIds.length === 0) return [];
 
@@ -82,6 +95,14 @@ export default function Home() {
         return guilds;
     }
 
+    function triggerCreationError(error) {
+        setCreationError(error);
+
+        setTimeout(() => {
+            setCreationError("");
+        }, 5000);
+    }
+
     const createNewGuild = (guildName) => {
         const createG = async () => {
             let guildData = await fetch("/api/createGuild", {
@@ -94,23 +115,68 @@ export default function Home() {
 
             guildData = await guildData.json();
 
-            setGuilds([...guilds, guildData]);
-            setIsCreatingGuild(false);
+            if (guildData.error) {
+                triggerCreationError(guildData.error);
+            } else {
+                setGuilds([...guilds, guildData]);
+                setIsCreatingGuild(false);
+            }
+
+            setCreationIsLoading(false);
         };
 
+        if (guildName === "") {
+            triggerCreationError("You have to insert a valid name!");
+            return;
+        }
+
+        setCreationIsLoading(true);
         createG();
     };
 
+    const deleteGuild = (guildId) => {
+        const deleteG = async (id) => {
+            console.log("DELETE!");
+        };
+
+        deleteG(guildId);
+    };
+
+    function handleShowPopup() {
+
+    }
+
     return (
-        <div className="bg-cyan-300 flex h-screen">
+        <div className="flex h-screen text-white">
             {status === "loading" || userData === "loading" ? (
                 "Loading"
             ) : (
                 <>
                     {isCreatingGuild && (
-                        <CreateGuildForm
-                            create={createNewGuild}
-                            setIsCreatingGuild={setIsCreatingGuild}
+                        <Overlay
+                            close={setIsCreatingGuild}
+                            child={
+                                <CreateGuildForm
+                                    isLoading={creationIsLoading}
+                                    error={creationError}
+                                    create={createNewGuild}
+                                    setIsCreatingGuild={setIsCreatingGuild}
+                                />
+                            }
+                        />
+                    )}
+
+                    {isDeletingGuild.guildId && (
+                        <Overlay
+                            close={setIsDeletingGuild}
+                            child={
+                                <DeleteGuildPopup
+                                    guildName={isDeletingGuild.guildName}
+                                    guildId={isDeletingGuild.guildId}
+                                    close={setIsDeletingGuild}
+                                    deleteG={deleteGuild}
+                                />
+                            }
                         />
                     )}
 
@@ -125,13 +191,14 @@ export default function Home() {
                         />
                     )}
 
-                    {/* <Guild
+                    <Guild
                         guildId={
                             selectedGuild !== "none"
                                 ? selectedGuild
                                 : "637297706f6a3a60f5aa4344"
                         }
-                    /> */}
+                        deleteGuild={setIsDeletingGuild}
+                    />
                 </>
             )}
         </div>
