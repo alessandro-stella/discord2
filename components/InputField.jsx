@@ -14,7 +14,7 @@ export default function InputField({
                 {label.toUpperCase()}
             </div>
             <input
-                className={`rounded-sm w-full px-2 py-1 transition-all border-2 outline-none border-discordGrey-850 bg-discordGrey-800 focus:border-discordPurple text-discordGrey-100 focus:shadow-xl ${
+                className={`rounded-sm w-full px-2 py-1 transition-all border-2 outline-none border-discordGrey-850 bg-discordGrey-800 focus:border-discordPurple-light text-discordGrey-100 focus:shadow-xl ${
                     isPasswordShown !== "noPassword" ? "pr-8" : ""
                 }`}
                 type={type}

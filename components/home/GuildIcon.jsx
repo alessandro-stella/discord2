@@ -88,8 +88,8 @@ export default function GuildIcon({
                     ref={icon}
                     className={`text-discordGrey-100 text-shadow h-full w-full aspect-square grid place-content-center hover:cursor-pointer relative ${
                         selectedGuild !== data.id
-                            ? " rounded-[2rem] hover:rounded-2xl bg-discordGrey-650 hover:bg-discordPurple"
-                            : " rounded-2xl bg-discordPurple"
+                            ? " rounded-[2rem] hover:rounded-2xl bg-discordGrey-650 hover:bg-discordPurple-light"
+                            : " rounded-2xl bg-discordPurple-light"
                     } transition-all`}>
                     {data === "loading" ? (
                         <SimpleLoader />

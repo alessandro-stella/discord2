@@ -1,4 +1,4 @@
-import CreateGuildForm from "components/CreateGuildForm";
+import CreateGuildPopup from "components/CreateGuildPopup";
 import DeleteGuildPopup from "components/DeleteGuildPopup";
 import Guild from "components/home/Guild";
 import SideBar from "components/home/SideBar";
@@ -142,43 +142,41 @@ export default function Home() {
         deleteG(guildId);
     };
 
-    function handleShowPopup() {
-
-    }
-
     return (
         <div className="flex h-screen text-white">
             {status === "loading" || userData === "loading" ? (
                 "Loading"
             ) : (
                 <>
-                    {isCreatingGuild && (
-                        <Overlay
-                            close={setIsCreatingGuild}
-                            child={
-                                <CreateGuildForm
+                    <Overlay
+                        close={
+                            [
+                                isCreatingGuild ? setIsCreatingGuild : null,
+                                isDeletingGuild.guildId
+                                    ? setIsDeletingGuild
+                                    : null,
+                            ].filter((f) => f)[0]
+                        }>
+                        {[
+                            isCreatingGuild ? (
+                                <CreateGuildPopup
                                     isLoading={creationIsLoading}
                                     error={creationError}
                                     create={createNewGuild}
                                     setIsCreatingGuild={setIsCreatingGuild}
                                 />
-                            }
-                        />
-                    )}
+                            ) : null,
 
-                    {isDeletingGuild.guildId && (
-                        <Overlay
-                            close={setIsDeletingGuild}
-                            child={
+                            isDeletingGuild.guildId ? (
                                 <DeleteGuildPopup
                                     guildName={isDeletingGuild.guildName}
                                     guildId={isDeletingGuild.guildId}
                                     close={setIsDeletingGuild}
                                     deleteG={deleteGuild}
                                 />
-                            }
-                        />
-                    )}
+                            ) : null,
+                        ].filter((f) => f)[0] || null}
+                    </Overlay>
 
                     {guilds === "loading" ? (
                         "Loading"

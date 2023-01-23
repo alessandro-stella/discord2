@@ -1,8 +1,18 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import GuildIcon from "../GuildIcon";
-import Label from "../ServerLabel";
-import { IoIosAdd } from "react-icons/io";
 import CreateGuildIcon from "components/CreateGuildIcon";
+
+function ServerLabel({ text, distanceFromTop }) {
+    return (
+        <div
+            className={`absolute z-[500] ml-3 left-full -translate-y-1/2`}
+            style={{ top: `${distanceFromTop}px` }}>
+            <div className="w-max bg-discordGrey-900 shadow-md rounded-md text-discordGrey-150 z-[100] p-2 relative guild-label">
+                {text}
+            </div>
+        </div>
+    );
+}
 
 export default function SideBar({
     guilds,
@@ -42,7 +52,7 @@ export default function SideBar({
     return (
         <div className="relative h-full flex flex-col w-[4.5em] px-2 bg-discordGrey-850">
             {labelData.text !== "" && !isScrolling ? (
-                <Label
+                <ServerLabel
                     text={labelData.text}
                     distanceFromTop={labelData.distanceFromTop}
                 />
@@ -80,8 +90,10 @@ export default function SideBar({
 
                 <div className="bg-discordGrey-750 my-1 mx-3 h-[0.125em]" />
 
-                <CreateGuildIcon setLabelData={setLabelData} createGuild={createGuild} />
-                
+                <CreateGuildIcon
+                    setLabelData={setLabelData}
+                    createGuild={createGuild}
+                />
             </div>
         </div>
     );

@@ -92,7 +92,7 @@ export default function Login({ providers, randomIndex }) {
                                                     !isRegistering
                                             )
                                         }
-                                        className="font-bold text-discordPurple hover:underline hover:decoration-discordPurple w-fit hover:cursor-pointer">
+                                        className="font-bold text-discordPurple-light hover:underline hover:decoration-discordPurple-light w-fit hover:cursor-pointer">
                                         {isRegistering
                                             ? "Login now"
                                             : "Join us now!"}

@@ -15,7 +15,11 @@ module.exports = {
                 github: "#1B1F23",
                 spotify: "#1ED760",
                 google: "#fff",
-                discordPurple: "#7289da",
+                discordPurple: {
+                    light: "#7289da",
+                    normal: "#5865F2",
+                    dark: "#4752C4",
+                },
                 discordGrey: {
                     950: "hsl(210, 8%, 5%)",
                     900: "hsl(210, 8%, 10%)",

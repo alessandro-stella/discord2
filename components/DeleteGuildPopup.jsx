@@ -1,10 +1,12 @@
+import { useEffect } from "react";
+
 export default function DeleteGuildPopup({
     guildName,
     guildId,
     close,
     deleteG,
+    test,
 }) {
-
     return (
         <div className="flex flex-col gap-3 m-4 rounded-md bg-discordGrey-750 z-[100] absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 md:min-w-[30em] md:max-w-[40%] w-5/6 overflow-hidden">
             <div className="p-4">

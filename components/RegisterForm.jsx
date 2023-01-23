@@ -152,7 +152,7 @@ export default function RegisterForm({ propEmail = "", showEmail = true }) {
                         onClick={() =>
                             setIsFormatShown((isFormatShown) => !isFormatShown)
                         }
-                        className="font-bold text-discordPurple hover:underline hover:decoration-discordPurple w-fit hover:cursor-pointer">
+                        className="font-bold text-discordPurple-light hover:underline hover:decoration-discordPurple-light w-fit hover:cursor-pointer">
                         Password format
                     </div>
 
@@ -175,13 +175,13 @@ export default function RegisterForm({ propEmail = "", showEmail = true }) {
                 <div className="flex flex-col gap-2 mt-1 md:flex-row">
                     <div
                         onClick={() => handleSignIn()}
-                        className="text-white grid w-full py-2 text-center uppercase hover:brightness-110 transition-all rounded-sm shadow-md select-none bg-discordPurple hover:shadow-xl hover:cursor-pointer place-content-center">
+                        className="text-white grid w-full py-2 text-center uppercase hover:brightness-110 transition-all rounded-sm shadow-md select-none bg-discordPurple-light hover:shadow-xl hover:cursor-pointer place-content-center">
                         {isLoading ? <SimpleLoader /> : "register"}
                     </div>
                     {!showEmail && (
                         <div
                             onClick={() => handleGoBack()}
-                            className="py-2 text-center text-discordPurple hover:bg-discordPurple hover:bg-opacity-[15%] uppercase transition-all rounded-sm shadow-md select-none border-discordPurple border-[3px] font-semibold hover:shadow-xl hover:cursor-pointer w-full grid place-content-center">
+                            className="py-2 text-center text-discordPurple-light hover:bg-discordPurple-light hover:bg-opacity-[15%] uppercase transition-all rounded-sm shadow-md select-none border-discordPurple-light border-[3px] font-semibold hover:shadow-xl hover:cursor-pointer w-full grid place-content-center">
                             Go back
                         </div>
                     )}

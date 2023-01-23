@@ -91,7 +91,7 @@ export default function LoginForm() {
 
                 <div
                     onClick={() => handleSignIn()}
-                    className="grid py-2 mt-1 text-center uppercase transition-all rounded-sm shadow-md select-none place-content-center bg-discordPurple hover:shadow-xl hover:cursor-pointer">
+                    className="grid py-2 mt-1 text-center uppercase transition-all rounded-sm shadow-md select-none place-content-center bg-discordPurple-light hover:shadow-xl hover:cursor-pointer">
                     {isLoading ? <SimpleLoader /> : "login"}
                 </div>
             </div>
