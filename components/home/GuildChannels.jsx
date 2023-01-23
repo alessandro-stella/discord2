@@ -19,7 +19,7 @@ export default function GuildChannels({
     channels,
     deleteGuild,
 }) {
-    const [showOptions, setShowOptions] = useState(true);
+    const [showOptions, setShowOptions] = useState(false);
 
     useEffect(() => setShowOptions(false), [guildId]);
 
