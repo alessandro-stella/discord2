@@ -9,6 +9,7 @@ export default function GuildIcon({
     setLabelData,
 }) {
     const [data, setData] = useState("loading");
+    const [isHovered, setIsHovered] = useState(false);
 
     useEffect(() => {
         const getData = async () => {
@@ -60,6 +61,8 @@ export default function GuildIcon({
     };
 
     const showLabel = () => {
+        setIsHovered(true);
+
         const distanceFromTop = getCoords(icon.current);
 
         setLabelData({
@@ -69,6 +72,8 @@ export default function GuildIcon({
     };
 
     const hideLabel = () => {
+        setIsHovered(false);
+
         setLabelData({
             text: "",
             distanceFromTop: 0,
@@ -78,7 +83,19 @@ export default function GuildIcon({
     return (
         <div
             onClick={handleClick}
-            className="relative w-full transition-all aspect-square">
+            className="relative w-full overflow-visible transition-all  px-2">
+            <div
+                className={`w-1 bg-white absolute top-1/2 left-0 -translate-y-1/2 rounded-r-md transition origin-[center_left] h-4 ${
+                    selectedGuild === data.id
+                        ? "scale-y-[200%]"
+                        : ""
+                } ${
+                    selectedGuild !== data.id && !isHovered
+                        ? "scale-x-0"
+                        : "scale-x-1"
+                }`}
+            />
+
             <div className="relative w-full px-1 py-1">
                 <div
                     onFocus={showLabel}

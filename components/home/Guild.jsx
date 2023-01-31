@@ -19,12 +19,16 @@ export default function Guild({ guildId, deleteGuild }) {
 
     return (
         <div className="flex-1 flex">
-            <GuildChannels
-                guildName={guildData.name}
-                guildId={guildData._id}
-                deleteGuild={deleteGuild}
-            />
-            <Messages />
+            {guildData && (
+                <>
+                    <GuildChannels
+                        guildName={guildData.name}
+                        guildId={guildData._id}
+                        deleteGuild={deleteGuild}
+                    />
+                    <Messages />
+                </>
+            )}
         </div>
     );
 }

@@ -36,7 +36,7 @@ export default function CreateGuildIcon({ setLabelData, createGuild }) {
     };
 
     return (
-        <div className="relative w-full transition-all aspect-square">
+        <div className="relative w-full transition-all aspect-square px-2">
             <div className="relative w-full px-1 py-1">
                 <div
                     onFocus={showLabel}

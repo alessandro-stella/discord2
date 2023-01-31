@@ -192,7 +192,7 @@ select {
     height: 20%;
     aspect-ratio: 1/1;
     content: "";
-    background-color: var(--discord-grey-850);
+    background-color: var(--discord-grey-900);
 
     position: absolute;
     top: 40%;

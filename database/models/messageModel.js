@@ -2,12 +2,12 @@ import { Schema, model } from "mongoose";
 
 const messageSchema = new Schema(
     {
-        userId: {
+        authorId: {
             type: String,
             required: true,
         },
 
-        guildId: {
+        channelId: {
             type: String,
             required: true,
         },

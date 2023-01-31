@@ -1,16 +1,26 @@
 import mongoose from "mongoose";
 
-const guildSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true,
+const guildSchema = new mongoose.Schema(
+    {
+        name: {
+            type: String,
+            required: true,
+        },
+
+        ownerId: {
+            type: String,
+            required: true,
+        },
+
+        roles: {
+            type: Array,
+            default: [],
+        },
+
+        icon: String,
     },
-    ownerId: {
-        type: String,
-        required: true,
-    },
-    icon: String,
-});
+    { timestamps: true }
+);
 
 const Guild = mongoose.models.Guild || mongoose.model("Guild", guildSchema);
 

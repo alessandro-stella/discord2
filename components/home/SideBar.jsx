@@ -50,7 +50,7 @@ export default function SideBar({
     };
 
     return (
-        <div className="relative h-full flex flex-col w-[4.5em] px-2 bg-discordGrey-850">
+        <div className="relative h-full flex flex-col w-[4.5em] bg-discordGrey-850">
             {labelData.text !== "" && !isScrolling ? (
                 <ServerLabel
                     text={labelData.text}
@@ -59,7 +59,7 @@ export default function SideBar({
             ) : null}
 
             <div
-                className="py-2 flex-1 overflow-y-auto no-scrollbar"
+                className="py-2 flex-1 overflow-y-auto overflow-x-visible no-scrollbar"
                 onScroll={handleScroll}>
                 <GuildIcon
                     guildData={{
@@ -72,10 +72,9 @@ export default function SideBar({
                     setLabelData={setLabelData}
                 />
 
-                <div className="bg-discordGrey-750 my-1 mx-3 h-[0.125em]" />
-
                 {guilds.length !== 0 && (
                     <>
+                        <div className="bg-discordGrey-750 my-1 mx-3 h-[0.125em]" />
                         {guilds.map((guildData, index) => (
                             <GuildIcon
                                 key={index}

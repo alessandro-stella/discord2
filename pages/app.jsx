@@ -136,7 +136,16 @@ export default function Home() {
 
     const deleteGuild = (guildId) => {
         const deleteG = async (id) => {
-            console.log("DELETE!");
+            let response;
+
+            response = await fetch("/api/deleteGuild", {
+                headers: {
+                    "Content-Type": "application/json",
+                    guildId,
+                },
+            });
+
+            const deleteResponse = await response.json();
         };
 
         deleteG(guildId);
@@ -189,14 +198,12 @@ export default function Home() {
                         />
                     )}
 
-                    <Guild
-                        guildId={
-                            selectedGuild !== "none"
-                                ? selectedGuild
-                                : "637297706f6a3a60f5aa4344"
-                        }
-                        deleteGuild={setIsDeletingGuild}
-                    />
+                    {selectedGuild !== "none" && (
+                        <Guild
+                            guildId={selectedGuild}
+                            deleteGuild={setIsDeletingGuild}
+                        />
+                    )}
                 </>
             )}
         </div>
