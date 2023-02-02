@@ -1,15 +1,14 @@
 import Guild from "database/models/guildModel";
 
 export default async function deleteGuild(guildId) {
-    console.log({ guildId });
+    const deleteResponse = await Guild.findByIdAndDelete(guildId)
+        .then((res) => {
+            // Implementare eliminazione dei messaggi e dei
+            // canali di questa guild
 
-    const deleteResponse = await Guild.findByIdAndDelete(guildId).then(
-        (res) => {
-            return res;
-        }
-    );
+            return { id: res._id, status: 200 };
+        })
+        .catch((e) => ({ error: e.message, status: 500 }));
 
-    console.log({ deleteResponse });
-
-    return { daje: "Roma" };
+    return deleteResponse;
 }

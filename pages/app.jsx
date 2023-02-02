@@ -1,4 +1,5 @@
-import CreateGuildPopup from "components/CreateGuildPopup";
+import CreatePopup from "components/CreatePopup";
+import CreateGuildPopup from "components/CreatePopup";
 import DeleteGuildPopup from "components/DeleteGuildPopup";
 import Guild from "components/home/Guild";
 import SideBar from "components/home/SideBar";
@@ -16,10 +17,16 @@ export default function Home() {
     const [selectedGuild, setSelectedGuild] = useState("none");
 
     const [isCreatingGuild, setIsCreatingGuild] = useState(false);
-    const [creationIsLoading, setCreationIsLoading] = useState(false);
-    const [creationError, setCreationError] = useState("");
+    const [createGuildIsLoading, setCreateGuildIsLoading] = useState(false);
+    const [createGuildError, setCreateGuildError] = useState("");
 
     const [isDeletingGuild, setIsDeletingGuild] = useState({});
+    const [deleteGuildIsLoading, setDeleteGuildIsLoading] = useState(false);
+    const [deleteGuildError, setDeleteGuildError] = useState("");
+
+    const [isCreatingChannel, setIsCreatingChannel] = useState(false);
+    const [createChannelIsLoading, setCreateChannelIsLoading] = useState(false);
+    const [createChannelError, setCreateChannelError] = useState("");
 
     useEffect(() => {
         if (status === "loading") return;
@@ -75,10 +82,14 @@ export default function Home() {
 
     useEffect(() => {
         if (!isCreatingGuild) {
-            setCreationIsLoading(false);
-            setCreationError("");
+            setCreateGuildIsLoading(false);
+            setCreateGuildError("");
         }
     }, [isCreatingGuild]);
+
+    useEffect(() => {
+        console.log({ isCreatingChannel });
+    }, [isCreatingChannel]);
 
     async function fetchGuilds(guildIds) {
         if (guildIds.length === 0) return [];
@@ -95,11 +106,11 @@ export default function Home() {
         return guilds;
     }
 
-    function triggerCreationError(error) {
-        setCreationError(error);
+    function triggerError(error, f) {
+        f(error);
 
         setTimeout(() => {
-            setCreationError("");
+            f("");
         }, 5000);
     }
 
@@ -116,26 +127,60 @@ export default function Home() {
             guildData = await guildData.json();
 
             if (guildData.error) {
-                triggerCreationError(guildData.error);
+                triggerError(guildData.error, setCreateGuildError);
             } else {
                 setGuilds([...guilds, guildData]);
+                setSelectedGuild(guildData.id);
                 setIsCreatingGuild(false);
             }
 
-            setCreationIsLoading(false);
+            setCreateGuildIsLoading(false);
         };
 
         if (guildName === "") {
-            triggerCreationError("You have to insert a valid name!");
+            triggerError("You have to insert a valid name!", setCreationError);
             return;
         }
 
-        setCreationIsLoading(true);
+        setCreateGuildIsLoading(true);
         createG();
     };
 
+    const createNewChannel = (channelName, guildId) => {
+        const createC = async () => {
+            let channelData = await fetch("/api/createChannel", {
+                headers: {
+                    "Content-Type": "application/json",
+                    name: channelName,
+                    guild: guildId,
+                },
+            });
+
+            channelData = await channelData.json();
+
+            if (channelData.error) {
+                triggerError(channelData.error, setCreateChannelError);
+            } else {
+                setIsCreatingChannel(false);
+            }
+
+            setCreateChannelIsLoading(false);
+        };
+
+        if (channelName === "") {
+            triggerError(
+                "You have to insert a valid name!",
+                setCreateChannelError
+            );
+            return;
+        }
+
+        setCreateChannelIsLoading(true);
+        createC();
+    };
+
     const deleteGuild = (guildId) => {
-        const deleteG = async (id) => {
+        const deleteG = async () => {
             let response;
 
             response = await fetch("/api/deleteGuild", {
@@ -146,9 +191,22 @@ export default function Home() {
             });
 
             const deleteResponse = await response.json();
+
+            if (deleteResponse.error) {
+                triggerError(deleteResponse.error, setDeleteGuildError);
+            } else {
+                setGuilds(
+                    guilds.filter((guild) => guild.id !== deleteResponse.id)
+                );
+                setSelectedGuild("none");
+                setIsDeletingGuild(false);
+            }
+
+            setDeleteGuildIsLoading(false);
         };
 
-        deleteG(guildId);
+        setDeleteGuildIsLoading(true);
+        deleteG();
     };
 
     return (
@@ -161,6 +219,7 @@ export default function Home() {
                         close={
                             [
                                 isCreatingGuild ? setIsCreatingGuild : null,
+                                isCreatingChannel ? setIsCreatingChannel : null,
                                 isDeletingGuild.guildId
                                     ? setIsDeletingGuild
                                     : null,
@@ -168,11 +227,22 @@ export default function Home() {
                         }>
                         {[
                             isCreatingGuild ? (
-                                <CreateGuildPopup
-                                    isLoading={creationIsLoading}
-                                    error={creationError}
+                                <CreatePopup
+                                    name="guild"
+                                    isLoading={createGuildIsLoading}
+                                    error={createGuildError}
                                     create={createNewGuild}
-                                    setIsCreatingGuild={setIsCreatingGuild}
+                                    setIsCreating={setIsCreatingGuild}
+                                />
+                            ) : null,
+
+                            isCreatingChannel ? (
+                                <CreatePopup
+                                    name="channel"
+                                    isLoading={createChannelIsLoading}
+                                    error={createChannelError}
+                                    create={createNewChannel}
+                                    setIsCreating={setIsCreatingChannel}
                                 />
                             ) : null,
 
@@ -180,6 +250,8 @@ export default function Home() {
                                 <DeleteGuildPopup
                                     guildName={isDeletingGuild.guildName}
                                     guildId={isDeletingGuild.guildId}
+                                    error={deleteGuildError}
+                                    isLoading={deleteGuildIsLoading}
                                     close={setIsDeletingGuild}
                                     deleteG={deleteGuild}
                                 />
@@ -202,6 +274,7 @@ export default function Home() {
                         <Guild
                             guildId={selectedGuild}
                             deleteGuild={setIsDeletingGuild}
+                            createChannel={setIsCreatingChannel}
                         />
                     )}
                 </>

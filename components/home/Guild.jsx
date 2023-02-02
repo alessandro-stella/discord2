@@ -1,8 +1,9 @@
+import SimpleLoader from "components/SimpleLoader";
 import { useEffect, useState } from "react";
 import GuildChannels from "./GuildChannels";
 import Messages from "./Messages";
 
-export default function Guild({ guildId, deleteGuild }) {
+export default function Guild({ guildId, deleteGuild, createChannel }) {
     const [guildData, setGuildData] = useState({ name: guildId });
 
     useEffect(() => {
@@ -22,10 +23,18 @@ export default function Guild({ guildId, deleteGuild }) {
             {guildData && (
                 <>
                     <GuildChannels
-                        guildName={guildData.name}
+                        guildName={
+                            guildData.name === guildId ? (
+                                <SimpleLoader />
+                            ) : (
+                                guildData.name
+                            )
+                        }
                         guildId={guildData._id}
                         deleteGuild={deleteGuild}
+                        createChannel={createChannel}
                     />
+
                     <Messages />
                 </>
             )}

@@ -18,29 +18,42 @@ export default function GuildChannels({
     guildId,
     channels,
     deleteGuild,
+    createChannel,
 }) {
     const [showOptions, setShowOptions] = useState(false);
 
     useEffect(() => setShowOptions(false), [guildId]);
 
     return (
-        <div className="bg-discordGrey-800 min-w-[15em] flex-1 flex flex-col justify-between relative">
+        <div className="bg-discordGrey-800 min-w-[15em] flex-1 flex flex-col relative">
             <div
                 className="flex gap-2 px-4 py-3 transition-all shadow-sm cursor-pointer shadow-discordGrey-900 hover:bg-discordGrey-750"
                 onClick={() => setShowOptions(!showOptions)}>
-                <div className="flex-1 min-w-0 overflow-hidden font-bold tracking-wide select-none whitespace-nowrap text-ellipsis">
+                <div
+                    className={`flex-1 select-none ${
+                        guildName instanceof String
+                            ? "min-w-0 overflow-hidden font-bold tracking-wide  whitespace-nowrap text-ellipsis"
+                            : "grid"
+                    }`}>
                     {guildName}
                 </div>
+
                 <div className="grid text-xl place-content-center">
                     {showOptions ? <IoMdClose /> : <IoIosArrowDown />}
                 </div>
             </div>
+
+            <div className="flex-1 bg-red-500">channels</div>
 
             <div
                 className={`absolute top-12 w-full p-2 transition origin-top text-sm text-discordGrey-250 ${
                     showOptions ? "scale-1" : "scale-0"
                 }`}>
                 <div className="flex flex-col gap-1 p-2 rounded-sm shadow-lg bg-discordGrey-900">
+                    <OptionButton
+                        label="Create channel"
+                        f={() => createChannel(true)}
+                    />
                     <OptionButton label="Change server name" f={() => {}} />
 
                     <div className="bg-discordGrey-800 h-[1px] w-[95%] m-auto" />
