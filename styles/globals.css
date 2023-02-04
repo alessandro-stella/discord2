@@ -204,10 +204,40 @@ select {
     transform-origin: top left;
 }
 
+/*====================
+-- Remove scrollbar --
+====================*/
+
 .no-scrollbar {
     -ms-overflow-style: none; /* Internet Explorer 10+ */
     scrollbar-width: none; /* Firefox */
 }
 .no-scrollbar::-webkit-scrollbar {
     display: none; /* Safari and Chrome */
+}
+
+/*====================
+-- Custom scrollbar --
+====================*/
+
+/* Firefox */
+* {
+    scrollbar-width: auto;
+    scrollbar-color: var(--scrollbar-color) var(--discord-grey-800);
+}
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+    width: 8px;
+}
+
+*::-webkit-scrollbar-track {
+    background: var(--discord-grey-800);
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: var(--scrollbar-color);
+    border-radius: 100vmax;
+    border: 2px solid var(--discord-grey-800);
+    border-width: 0 2px 0 2px;
 }

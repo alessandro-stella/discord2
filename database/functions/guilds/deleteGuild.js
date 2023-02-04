@@ -8,7 +8,10 @@ export default async function deleteGuild(guildId) {
 
             return { id: res._id, status: 200 };
         })
-        .catch((e) => ({ error: e.message, status: 500 }));
+        .catch((e) => ({
+            error: "There's been an error during the process, please try again",
+            status: 500,
+        }));
 
     return deleteResponse;
 }

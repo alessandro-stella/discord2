@@ -18,17 +18,17 @@ export default function GuildIcon({
                 return;
             }
 
-            let response = await fetch("/api/getGuildInfo", {
+            let response = await fetch("/api/guilds/getGuildInfo", {
                 headers: {
                     "Content-Type": "application/json",
                     guildId: guildData,
                 },
             });
 
-            response = await response.json();
+            guildInfo = await response.json();
 
-            if (response.id) {
-                setData({ ...response });
+            if (guildInfo.id) {
+                setData({ ...guildInfo });
             } else {
                 setData({ name: "ERROR" });
             }

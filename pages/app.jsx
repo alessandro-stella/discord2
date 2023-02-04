@@ -13,8 +13,12 @@ export default function Home() {
     const { data: session, status } = useSession();
 
     const [userData, setUserData] = useState("loading");
+
     const [guilds, setGuilds] = useState("loading");
     const [selectedGuild, setSelectedGuild] = useState("none");
+
+    const [channels, setChannels] = useState([]);
+    const [selectedChannel, setSelectedChannel] = useState("");
 
     const [isCreatingGuild, setIsCreatingGuild] = useState(false);
     const [createGuildIsLoading, setCreateGuildIsLoading] = useState(false);
@@ -37,9 +41,7 @@ export default function Home() {
 
         if (session.email) {
             const processData = async () => {
-                let response;
-
-                response = await fetch("/api/getUserId", {
+                let response = await fetch("/api/authentication/getUserId", {
                     headers: {
                         "Content-Type": "application/json",
                         email: session.email,
@@ -53,7 +55,7 @@ export default function Home() {
                     return;
                 }
 
-                response = await fetch("/api/findUser", {
+                response = await fetch("/api/authentication/findUser", {
                     headers: {
                         "Content-Type": "application/json",
                         userId: userId,
@@ -87,14 +89,10 @@ export default function Home() {
         }
     }, [isCreatingGuild]);
 
-    useEffect(() => {
-        console.log({ isCreatingChannel });
-    }, [isCreatingChannel]);
-
     async function fetchGuilds(guildIds) {
         if (guildIds.length === 0) return [];
 
-        const response = await fetch("/api/getGuildsForSidebar", {
+        const response = await fetch("/api/guilds/getGuildsForSidebar", {
             headers: {
                 "Content-Type": "application/json",
                 userGuilds: guildIds,
@@ -116,7 +114,7 @@ export default function Home() {
 
     const createNewGuild = (guildName) => {
         const createG = async () => {
-            let guildData = await fetch("/api/createGuild", {
+            let guildData = await fetch("/api/guilds/createGuild", {
                 headers: {
                     "Content-Type": "application/json",
                     name: guildName,
@@ -146,13 +144,13 @@ export default function Home() {
         createG();
     };
 
-    const createNewChannel = (channelName, guildId) => {
+    const createNewChannel = (channelName) => {
         const createC = async () => {
-            let channelData = await fetch("/api/createChannel", {
+            let channelData = await fetch("/api/guilds/createChannel", {
                 headers: {
                     "Content-Type": "application/json",
                     name: channelName,
-                    guild: guildId,
+                    guildId: selectedGuild,
                 },
             });
 
@@ -161,6 +159,7 @@ export default function Home() {
             if (channelData.error) {
                 triggerError(channelData.error, setCreateChannelError);
             } else {
+                setChannels([...channels, channelData.channel]);
                 setIsCreatingChannel(false);
             }
 
@@ -183,7 +182,7 @@ export default function Home() {
         const deleteG = async () => {
             let response;
 
-            response = await fetch("/api/deleteGuild", {
+            response = await fetch("/api/guilds/deleteGuild", {
                 headers: {
                     "Content-Type": "application/json",
                     guildId,
@@ -273,6 +272,10 @@ export default function Home() {
                     {selectedGuild !== "none" && (
                         <Guild
                             guildId={selectedGuild}
+                            channels={channels}
+                            setChannels={setChannels}
+                            selectedChannel={selectedChannel}
+                            selectChannel={setSelectedChannel}
                             deleteGuild={setIsDeletingGuild}
                             createChannel={setIsCreatingChannel}
                         />

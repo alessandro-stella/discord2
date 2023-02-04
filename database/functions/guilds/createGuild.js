@@ -15,14 +15,14 @@ export default async function createGuild(name, ownerId) {
             } catch (e) {
                 return {
                     error: "There's been an error during the process, please try again",
+                    status: 500,
                 };
             }
         })
         .catch((err) => ({
             error: "There's been an error during the process, please try again",
+            status: 500,
         }));
 
-    return newGuildData.id
-        ? { id: newGuildData._id, name }
-        : { error: newGuildData.error };
+    return newGuildData.id ? { id: newGuildData._id, name } : newGuildData;
 }

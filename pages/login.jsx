@@ -22,7 +22,7 @@ export default function Login({ providers, randomIndex }) {
             const processData = async () => {
                 let response;
 
-                response = await fetch("/api/getUserId", {
+                response = await fetch("/api/authentication/getUserId", {
                     headers: {
                         "Content-Type": "application/json",
                         email: session.email,

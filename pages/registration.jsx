@@ -23,7 +23,7 @@ export default function Registration({ randomIndex }) {
         }
 
         const checkUser = async () => {
-            const response = await fetch("/api/getUserId", {
+            const response = await fetch("/api/authentication/getUserId", {
                 headers: {
                     "Content-Type": "application/json",
                     email: session.email,

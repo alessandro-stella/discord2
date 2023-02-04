@@ -1,12 +1,12 @@
-import { Schema, model } from "mongoose";
+import mongoose from "mongoose";
 
-const channelSchema = new Schema({
-    guildId: {
+const channelSchema = new mongoose.Schema({
+    name: {
         type: String,
         required: true,
     },
 
-    name: {
+    guildId: {
         type: String,
         required: true,
     },
@@ -17,6 +17,7 @@ const channelSchema = new Schema({
     },
 });
 
-const Channel = model("channel", channelSchema);
+const Channel =
+    mongoose.models.Channel || mongoose.model("Channel", channelSchema);
 
 export default Channel;

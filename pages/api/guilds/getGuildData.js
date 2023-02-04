@@ -5,5 +5,5 @@ export default async (req, res) => {
 
     const data = await getGuildData(guildId);
 
-    res.status(200).json(data);
+    res.status(data.status).json(data);
 };

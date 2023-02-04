@@ -1,5 +1,5 @@
 import { signOut } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { IoIosArrowDown, IoMdClose } from "react-icons/io";
 import { MdDelete } from "react-icons/md";
 
@@ -17,22 +17,60 @@ export default function GuildChannels({
     guildName,
     guildId,
     channels,
+    selectedChannel,
+    selectChannel,
     deleteGuild,
     createChannel,
 }) {
     const [showOptions, setShowOptions] = useState(false);
+    const [isScrollable, setIsScrollable] = useState(false);
+    const [isHovering, setIsHovering] = useState(false);
 
-    useEffect(() => setShowOptions(false), [guildId]);
+    const channelContainerRef = useRef(null);
+    const channelRef = useRef(null);
+
+    useEffect(() => {
+        console.log(selectedChannel);
+    }, [selectedChannel]);
+
+    useEffect(() => {
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
+    useEffect(() => checkScrollable(), [channels]);
+    useEffect(() => setShowOptions(false), [guildId, channels]);
+
+    let triggerResize = true;
+
+    const handleResize = () => {
+        if (triggerResize) {
+            checkScrollable();
+
+            triggerResize = false;
+
+            setTimeout(function () {
+                triggerResize = true;
+            }, 500);
+        }
+    };
+
+    function checkScrollable() {
+        const containerHeight = channelContainerRef.current.clientHeight;
+        const channelsHeight = channelRef.current.clientHeight;
+
+        setIsScrollable(channelsHeight >= containerHeight);
+    }
 
     return (
-        <div className="bg-discordGrey-800 min-w-[15em] flex-1 flex flex-col relative">
+        <div className="bg-discordGrey-800 min-w-[15em] flex-1 flex flex-col relative min-h-0">
             <div
                 className="flex gap-2 px-4 py-3 transition-all shadow-sm cursor-pointer shadow-discordGrey-900 hover:bg-discordGrey-750"
                 onClick={() => setShowOptions(!showOptions)}>
                 <div
                     className={`flex-1 select-none ${
-                        guildName instanceof String
-                            ? "min-w-0 overflow-hidden font-bold tracking-wide  whitespace-nowrap text-ellipsis"
+                        typeof guildName === "string"
+                            ? "min-w-0 overflow-hidden font-bold tracking-wide whitespace-nowrap text-ellipsis"
                             : "grid"
                     }`}>
                     {guildName}
@@ -43,7 +81,33 @@ export default function GuildChannels({
                 </div>
             </div>
 
-            <div className="flex-1 bg-red-500">channels</div>
+            <div
+                className={`flex-1 min-h-0 overflow-y-auto ${
+                    isHovering
+                        ? "[--scrollbar-color:var(--discord-grey-850)]"
+                        : "[--scrollbar-color:var(--discord-grey-800)]"
+                }`}
+                onMouseEnter={() => setIsHovering(true)}
+                onMouseLeave={() => setIsHovering(false)}
+                ref={channelContainerRef}>
+                <div
+                    className={`flex flex-col min-h-0 gap-2 p-2 ${
+                        isScrollable ? "pr-0" : ""
+                    }`}
+                    ref={channelRef}>
+                    {channels.map((channel) => (
+                        <div
+                            className={`overflow-hidden tracking-wide whitespace-nowrap text-ellipsis hover:bg-discordGrey-450 transition cursor-pointer select-none  ${
+                                selectedChannel === channel.id
+                                    ? "bg-red-500"
+                                    : ""
+                            } `}
+                            onClick={() => selectChannel(channel.id)}>
+                            #{channel.name}
+                        </div>
+                    ))}
+                </div>
+            </div>
 
             <div
                 className={`absolute top-12 w-full p-2 transition origin-top text-sm text-discordGrey-250 ${
@@ -54,6 +118,9 @@ export default function GuildChannels({
                         label="Create channel"
                         f={() => createChannel(true)}
                     />
+
+                    <div className="bg-discordGrey-800 h-[1px] w-[95%] m-auto" />
+
                     <OptionButton label="Change server name" f={() => {}} />
 
                     <div className="bg-discordGrey-800 h-[1px] w-[95%] m-auto" />

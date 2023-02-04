@@ -5,5 +5,5 @@ export default async (req, res) => {
 
     const newGuildData = await createGuild(name, ownerId);
 
-    res.status(200).json(newGuildData);
+    res.status(newGuildData.status ?? 200).json(newGuildData);
 };
