@@ -1,5 +1,5 @@
 import { signOut } from "next-auth/react";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { BiHash } from "react-icons/bi";
 import { IoIosArrowDown, IoMdClose, IoMdSettings } from "react-icons/io";
 import { MdDelete } from "react-icons/md";
@@ -61,17 +61,9 @@ export default function GuildChannels({
     const channelContainerRef = useRef(null);
     const channelRef = useRef(null);
 
-    useEffect(() => {
-        window.addEventListener("resize", handleResize);
-        return () => window.removeEventListener("resize", handleResize);
-    }, []);
-
-    useEffect(() => checkScrollable(), [channels]);
-    useEffect(() => setShowOptions(false), [guildId, channels]);
-
     let triggerResize = true;
 
-    const handleResize = () => {
+    function handleResize() {
         if (triggerResize) {
             checkScrollable();
 
@@ -81,7 +73,15 @@ export default function GuildChannels({
                 triggerResize = true;
             }, 500);
         }
-    };
+    }
+
+    useEffect(() => {
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, [handleResize]);
+
+    useEffect(() => checkScrollable(), [channels]);
+    useEffect(() => setShowOptions(false), [guildId, channels]);
 
     function checkScrollable() {
         const containerHeight = channelContainerRef.current.clientHeight;
@@ -125,6 +125,7 @@ export default function GuildChannels({
                     ref={channelRef}>
                     {channels.map((channel) => (
                         <Channel
+                            key={channel.id}
                             id={channel.id}
                             name={channel.name}
                             selectChannel={selectChannel}

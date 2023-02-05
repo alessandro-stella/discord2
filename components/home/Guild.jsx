@@ -38,7 +38,7 @@ export default function Guild({
         };
 
         fetchChannels();
-    }, [guildData]);
+    }, [guildId, guildData, setChannels]);
 
     useEffect(() => {
         const getGuildData = async () => {
