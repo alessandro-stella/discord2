@@ -1,6 +1,7 @@
 import { signOut } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
-import { IoIosArrowDown, IoMdClose } from "react-icons/io";
+import { BiHash } from "react-icons/bi";
+import { IoIosArrowDown, IoMdClose, IoMdSettings } from "react-icons/io";
 import { MdDelete } from "react-icons/md";
 
 function OptionButton({ label, f }) {
@@ -13,9 +14,40 @@ function OptionButton({ label, f }) {
     );
 }
 
+function Channel({ id, name, selectChannel, selectedChannel, isOwner }) {
+    const [isHovered, setIsHovered] = useState(false);
+
+    return (
+        <div
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+            className={`flex flex-row items-center gap-1.5 hover:bg-discordGrey-750 transition cursor-pointer select-none text-md p-1 rounded-sm ${
+                selectedChannel === id
+                    ? "bg-discordGrey-700 hover:bg-discordGrey-700 text-white font-light"
+                    : "text-discordGrey-450 hover:text-discordGrey-200"
+            }`}
+            onClick={() => selectChannel(id)}>
+            <div className="text-xl">
+                <BiHash />
+            </div>
+
+            <div className="overflow-hidden whitespace-nowrap text-ellipsis flex-1">
+                {name}
+            </div>
+
+            {isOwner && (isHovered || selectedChannel === id) && (
+                <div onClick={() => alert("OPEN SETTINGS")}>
+                    <IoMdSettings />
+                </div>
+            )}
+        </div>
+    );
+}
+
 export default function GuildChannels({
     guildName,
     guildId,
+    isOwner,
     channels,
     selectedChannel,
     selectChannel,
@@ -28,10 +60,6 @@ export default function GuildChannels({
 
     const channelContainerRef = useRef(null);
     const channelRef = useRef(null);
-
-    useEffect(() => {
-        console.log(selectedChannel);
-    }, [selectedChannel]);
 
     useEffect(() => {
         window.addEventListener("resize", handleResize);
@@ -82,7 +110,7 @@ export default function GuildChannels({
             </div>
 
             <div
-                className={`flex-1 min-h-0 overflow-y-auto ${
+                className={`flex-1 min-h-0 overflow-y-auto mt-[2px]  ${
                     isHovering
                         ? "[--scrollbar-color:var(--discord-grey-850)]"
                         : "[--scrollbar-color:var(--discord-grey-800)]"
@@ -91,20 +119,18 @@ export default function GuildChannels({
                 onMouseLeave={() => setIsHovering(false)}
                 ref={channelContainerRef}>
                 <div
-                    className={`flex flex-col min-h-0 gap-2 p-2 ${
+                    className={`flex flex-col min-h-0 gap-1 p-2 ${
                         isScrollable ? "pr-0" : ""
                     }`}
                     ref={channelRef}>
                     {channels.map((channel) => (
-                        <div
-                            className={`overflow-hidden tracking-wide whitespace-nowrap text-ellipsis hover:bg-discordGrey-450 transition cursor-pointer select-none  ${
-                                selectedChannel === channel.id
-                                    ? "bg-red-500"
-                                    : ""
-                            } `}
-                            onClick={() => selectChannel(channel.id)}>
-                            #{channel.name}
-                        </div>
+                        <Channel
+                            id={channel.id}
+                            name={channel.name}
+                            selectChannel={selectChannel}
+                            selectedChannel={selectedChannel}
+                            isOwner={isOwner}
+                        />
                     ))}
                 </div>
             </div>
@@ -128,7 +154,7 @@ export default function GuildChannels({
                     <div
                         onClick={() => deleteGuild({ guildName, guildId })}
                         className="flex items-center justify-between p-2 text-red-500 transition rounded-sm cursor-pointer select-none hover:bg-red-500 hover:text-white">
-                        <span>Delete server</span>{" "}
+                        <span>Delete server</span>
                         <span className="text-lg">
                             <MdDelete />
                         </span>

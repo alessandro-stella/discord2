@@ -2,6 +2,7 @@ import SimpleLoader from "components/SimpleLoader";
 import { useEffect, useState } from "react";
 import GuildChannels from "./GuildChannels";
 import Messages from "./Messages";
+import { useSession } from "next-auth/react";
 
 export default function Guild({
     guildId,
@@ -12,7 +13,9 @@ export default function Guild({
     deleteGuild,
     createChannel,
 }) {
+    const { data: session, status } = useSession();
     const [guildData, setGuildData] = useState({ name: guildId });
+    const [isOwner, setIsOwner] = useState(false);
 
     useEffect(() => {
         if (guildData.name === guildId) return;
@@ -48,12 +51,23 @@ export default function Guild({
             setGuildData(guildDataResponse);
         };
 
-        getGuildData();
-    }, [guildId]);
+        const checkIsOwner = async () => {
+            let response = await fetch("/api/authentication/checkIsOwner", {
+                headers: {
+                    "Content-Type": "application/json",
+                    guildId,
+                    email: session.email,
+                },
+            });
 
-    useEffect(() => {
-        console.log(selectedChannel);
-    }, [selectedChannel]);
+            const isOwnerResponse = await response.json();
+
+            setIsOwner(isOwnerResponse);
+        };
+
+        getGuildData();
+        checkIsOwner();
+    }, [guildId, session]);
 
     return (
         <div className="flex-1 flex">
@@ -67,7 +81,8 @@ export default function Guild({
                                 guildData.name
                             )
                         }
-                        guildId={guildData._id}
+                        guildId={guildData.id}
+                        isOwner={isOwner}
                         channels={channels}
                         selectedChannel={selectedChannel}
                         selectChannel={selectChannel}

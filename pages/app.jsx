@@ -1,5 +1,4 @@
 import CreatePopup from "components/CreatePopup";
-import CreateGuildPopup from "components/CreatePopup";
 import DeleteGuildPopup from "components/DeleteGuildPopup";
 import Guild from "components/home/Guild";
 import SideBar from "components/home/SideBar";
@@ -190,6 +189,7 @@ export default function Home() {
             });
 
             const deleteResponse = await response.json();
+            console.log({ deleteResponse });
 
             if (deleteResponse.error) {
                 triggerError(deleteResponse.error, setDeleteGuildError);

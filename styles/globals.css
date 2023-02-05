@@ -223,7 +223,7 @@ select {
 /* Firefox */
 * {
     scrollbar-width: auto;
-    scrollbar-color: var(--scrollbar-color) var(--discord-grey-800);
+    scrollbar-color: var(--scrollbar-color) transparent;
 }
 
 /* Chrome, Edge, and Safari */
@@ -238,6 +238,6 @@ select {
 *::-webkit-scrollbar-thumb {
     background-color: var(--scrollbar-color);
     border-radius: 100vmax;
-    border: 2px solid var(--discord-grey-800);
+    border: 2px solid transparent;
     border-width: 0 2px 0 2px;
 }
